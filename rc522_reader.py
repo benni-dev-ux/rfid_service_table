@@ -1,3 +1,4 @@
+import time
 from subprocess import check_call
 
 from gpiozero import Button
@@ -11,6 +12,7 @@ from screen_toggle import *
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 FORCE_ANALOG_SOUND = False
+SLEEP_DELAY = 0.05
 
 # Button Pins
 black_button = 19
@@ -77,6 +79,7 @@ def main():
         code = read_tag(reader)
 
         if code is not lastcode:
+            # button code 0 == pause
             if code == 0:
                 pause_button()
             else:
@@ -87,13 +90,15 @@ def main():
                         print("Playing " + m[0] + " at " + m[2])
                         player = media_player.play_media(m[2])
 
+        time.sleep(SLEEP_DELAY)
+
 
 def read_tag(reader):
-    id = reader.read_id()
-    if id == " ":
+    tag_id = reader.read_id()
+    if tag_id == "":
         return 0
     else:
-        return id
+        return tag_id
 
 
 media_list = media.media_list.list
