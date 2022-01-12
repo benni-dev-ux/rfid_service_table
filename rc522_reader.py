@@ -1,7 +1,7 @@
 from subprocess import check_call
 
-import pygame
 from gpiozero import Button
+from mfrc522 import SimpleMFRC522
 
 import media.media_list
 import media_player
@@ -11,6 +11,12 @@ from screen_toggle import *
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 FORCE_ANALOG_SOUND = False
+
+# Button Pins
+black_button = 19
+green_button = 13
+blue_button = 26
+yellow_button = 6
 
 
 def power_button():
@@ -41,20 +47,20 @@ def forward_button():
 
 
 def main():
-    if START_UP_SOUND:
-        startup = pygame.mixer.Sound(
-            "/home/pi/Raspi_RFID_player/assets/startup.wav")
-        startup.play()
+    # if START_UP_SOUND:
+    #     startup = pygame.mixer.Sound(
+    #         "/home/pi/Raspi_RFID_player/assets/startup.wav")
+    #     startup.play()
 
     print("\n RFID Player Ready")
 
     global player
 
     # GPIO   3, 4, 17 and 10
-    button1 = Button(3, hold_time=2)
-    button2 = Button(4, bounce_time=0.1)
-    button3 = Button(17, bounce_time=0.1)
-    button4 = Button(10, bounce_time=0.1)
+    button1 = Button(black_button, hold_time=2)
+    button2 = Button(yellow_button, bounce_time=0.1)
+    button3 = Button(blue_button, bounce_time=0.1)
+    button4 = Button(green_button, bounce_time=0.1)
 
     # Mapping functions to button presses
     button1.when_pressed = power_button
@@ -62,34 +68,29 @@ def main():
     button3.when_pressed = pause_button
     button4.when_pressed = forward_button
 
+    reader = SimpleMFRC522()
+
     # Main Loop of the App: Constantly checking for new  RFID input
     while True:
-        code = check_for_input()
+        code = check_for_input(reader)
         # Check if found code occurs in media list
-        for m in media_list:
-            if m[1] == code:
-                print("Playing " + m[0] + " at " + m[2])
-                player = media_player.play_media(m[2])
+    #  for m in media_list:
+    #      if m[1] == code:
+    #          print("Playing " + m[0] + " at " + m[2])
+    #          player = media_player.play_media(m[2])
 
-
-# Testfiles
-# video1 = ["testvideo", 6267256,
-#          "/home/pi/Raspi_RFID_player/assets/testvideo.mp4"]
-# audio1 = ["testaudio", 6268576,
-#          "/home/pi/Raspi_RFID_player/assets/testaudio.mp3"]
-#
-# media_list = [video1, audio1]
 
 media_list = media.media_list.list
 
 
-def check_for_input():
-    code = input('\n Scan RFID tag to Play Media \n')
-    # Strip first three Characters to avoid escape characters
-    code = code[3:]
-    # Cast to int
-    code = int(code)
-    return code
+def check_for_input(reader):
+    if reader.PICC_IsNewCardPresent():
+        if reader.PICC_ReadCardSerial():
+            print("RFID TAG ID:")
+            for i in range(reader.uid.size):
+                print(hex(reader.uid.uidByte[i]))
+                print(" ")
+                print()
 
 
 if __name__ == "__main__":
