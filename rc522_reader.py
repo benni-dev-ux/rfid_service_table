@@ -70,28 +70,33 @@ def main():
 
     reader = SimpleMFRC522()
 
+    lastcode = -1
+
     # Main Loop of the App: Constantly checking for new  RFID input
     while True:
-        code = check_for_input(reader)
-        # Check if found code occurs in media list
-    #  for m in media_list:
-    #      if m[1] == code:
-    #          print("Playing " + m[0] + " at " + m[2])
-    #          player = media_player.play_media(m[2])
+        code = read_tag(reader)
+
+        if code is not lastcode:
+            if code == 0:
+                pause_button()
+            else:
+
+                # Check if found code occurs in media list
+                for m in media_list:
+                    if m[1] == code:
+                        print("Playing " + m[0] + " at " + m[2])
+                        player = media_player.play_media(m[2])
+
+
+def read_tag(reader):
+    id = reader.read_id()
+    if id == " ":
+        return 0
+    else:
+        return id
 
 
 media_list = media.media_list.list
-
-
-def check_for_input(reader):
-    if reader.PICC_IsNewCardPresent():
-        if reader.PICC_ReadCardSerial():
-            print("RFID TAG ID:")
-            for i in range(reader.uid.size):
-                print(hex(reader.uid.uidByte[i]))
-                print(" ")
-                print()
-
 
 if __name__ == "__main__":
     main()

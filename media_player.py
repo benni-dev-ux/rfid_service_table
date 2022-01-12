@@ -2,9 +2,9 @@ import os
 
 from omxplayer.player import OMXPlayer
 
-from reader import SCREEN_TURN_OFF
+from rc522_reader import SCREEN_TURN_OFF
 from screen_toggle import *
-import reader
+import rc522_reader
 
 
 def is_playing():
