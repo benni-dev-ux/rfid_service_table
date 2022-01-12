@@ -2,9 +2,9 @@ import os
 
 from omxplayer.player import OMXPlayer
 
+import rc522_reader
 from rc522_reader import SCREEN_TURN_OFF
 from screen_toggle import *
-import rc522_reader
 
 
 def is_playing():
@@ -41,11 +41,20 @@ def play_media(filename):
 
     # starting OMXPlayer subprocess with video or audio file
     args = ""
-    if (reader.FORCE_ANALOG_SOUND):
+    if rc522_reader.FORCE_ANALOG_SOUND:
         args = "-o local"
     player = OMXPlayer(filename, args=args,
                        dbus_name='org.mpris.MediaPlayer2.omxplayer1')
     return player
+
+
+def play_feedback_sound():
+    filename = "/home/pi/rfid_service_table/assets/startup.wav"
+    args = ""
+    if rc522_reader.FORCE_ANALOG_SOUND:
+        args = "-o local"
+    OMXPlayer(filename, args=args,
+              dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 
 
 def stop_all_media():

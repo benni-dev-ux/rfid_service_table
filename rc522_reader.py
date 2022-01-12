@@ -53,7 +53,7 @@ def main():
     #     startup = pygame.mixer.Sound(
     #         "/home/pi/Raspi_RFID_player/assets/startup.wav")
     #     startup.play()
-
+    media_player.play_feedback_sound()
     print("\n RFID Player Ready")
 
     global player
@@ -83,6 +83,7 @@ def main():
             if code == 0:
                 pause_button()
             else:
+                media_player.play_feedback_sound()
 
                 # Check if found code occurs in media list
                 for m in media_list:
