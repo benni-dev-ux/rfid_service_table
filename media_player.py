@@ -48,8 +48,8 @@ def play_media(filename):
     return player
 
 
-def play_feedback_sound():
-    filename = "/home/pi/rfid_service_table/assets/startup.wav"
+def play_feedback_sound(filename):
+    filename = "/home/pi/rfid_service_table/assets/" + filename
     args = "--vol -1000"
     if rc522_reader.FORCE_ANALOG_SOUND:
         args = "-o local --vol -1000"

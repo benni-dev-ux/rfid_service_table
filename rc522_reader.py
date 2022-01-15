@@ -49,7 +49,7 @@ def forward_button():
 
 def main():
     if START_UP_SOUND:
-        media_player.play_feedback_sound()
+        media_player.play_feedback_sound("startup.wav")
     print("\n RFID Player Ready")
 
     global player
@@ -91,7 +91,7 @@ def main():
                 is_paused = True
         # Trigger Play Command if code occurs exactly once in list of last codes
         elif comp == code:
-            media_player.play_feedback_sound()
+            media_player.play_feedback_sound("beep.mp3")
             is_paused = False
             if comp == last_media_code:
                 pause_button()
