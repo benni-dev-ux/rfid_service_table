@@ -57,7 +57,7 @@ def main():
 
     # Testvideo
     media_list = []
-    test_video = "Testvideo", 1096175, "/home/pi/rfid_service_table/assets/testvideo.mp4"
+    test_video = "Testvideo", 524887201261, "/home/pi/rfid_service_table/assets/testvideo.mp4"
     media_list.append(test_video)
 
 
