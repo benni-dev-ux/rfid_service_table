@@ -4,7 +4,6 @@ from subprocess import check_call
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
 
-import media.media_list
 import media_player
 from screen_toggle import *
 
@@ -60,8 +59,7 @@ def main():
     test_video = "Testvideo", 524887201261, "/home/pi/rfid_service_table/assets/testvideo.mp4"
     media_list.append(test_video)
 
-
-    #media_list = media.media_list.list
+    # media_list = media.media_list.list
 
     button1 = Button(black_button, hold_time=2)
     button2 = Button(yellow_button, bounce_time=0.1)
@@ -85,7 +83,6 @@ def main():
         code = read_tag(reader)
         last_codes_lst.insert(0, code)
         last_codes_lst.pop()
-        # print(lastcode)
 
         comp = sum(last_codes_lst)
         if comp == 0:
@@ -98,7 +95,7 @@ def main():
             is_paused = False
             if comp == last_media_code:
                 pause_button()
-                print("resume")
+                print("resuming")
             else:
                 last_media_code = code
                 # Check if found code occurs in media list
@@ -117,7 +114,6 @@ def read_tag(reader):
         return reader.read_id()
     else:
         return 0
-
 
 
 if __name__ == "__main__":
