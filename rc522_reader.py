@@ -26,12 +26,12 @@ def power_button():
 
 
 def pause_button():
-    print("Play/Puse")
+    print("Play/Pause")
 
     try:
         player
     except NameError:
-        print("No music player defined")
+        pass
     else:
         player.play_pause()
 

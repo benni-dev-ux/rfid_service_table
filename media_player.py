@@ -50,9 +50,9 @@ def play_media(filename):
 
 def play_feedback_sound(filename):
     filename = "/home/pi/rfid_service_table/assets/" + filename
-    args = "--vol -1000"
+    args = "--vol 1000"
     if rc522_reader.FORCE_ANALOG_SOUND:
-        args = "-o local --vol -1000"
+        args = "-o local --vol 1000"
     OMXPlayer(filename, args=args,
               dbus_name='org.mpris.MediaPlayer2.omxplayer1')
 
