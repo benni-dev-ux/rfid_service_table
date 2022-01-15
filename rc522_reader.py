@@ -12,7 +12,7 @@ from screen_toggle import *
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 FORCE_ANALOG_SOUND = False
-SLEEP_DELAY = 0.1
+SLEEP_DELAY = 0.2
 
 # Button Pins
 black_button = 19
@@ -73,32 +73,51 @@ def main():
     reader = SimpleMFRC522()
 
     lastcode = [-1,-1,-1,-1,-1]
+    last=-1
+    is_paused = False
 
     # Main Loop of the App: Constantly checking for new  RFID input
     while True:
         #print("reading")
         code = read_tag(reader)
         #print(code)
-
-        if not code in lastcode:
-            # button code 0 == pause
-            if code == 0:
-                if media_player.is_playing():
-                    pause_button()
-                    print("pausing")
-                    media_player.play_feedback_sound()
-            else:
-             
-                print(code)
-
-                # Check if found code occurs in media list
-                for m in media_list:
-                    if m[1] == code:
-                        print("Playing " + m[0] + " at " + m[2])
-                        player = media_player.play_media(m[2])
+        
         lastcode.insert(0,code)
         lastcode.pop()
-        print(lastcode)
+        #print(lastcode)
+        
+        comp = sum(lastcode)
+        if comp == 0:
+            if not is_paused:
+                pause_button()
+                is_paused = True
+        elif comp == code:
+            is_paused = False
+            if comp ==last:
+                pause_button()
+                print("resume")
+            else:
+                last = code
+        
+                print("starting" +str(code))
+                
+
+       #     # button code 0 == pause
+        #    if code == 0:
+         #       if media_player.is_playing():
+          #          pause_button()
+           #         print("pausing")
+            #        media_player.play_feedback_sound()
+            #else:
+             
+             #   print(code)
+
+                # Check if found code occurs in media list
+              #  for m in media_list:
+               #     if m[1] == code:
+                #        print("Playing " + m[0] + " at " + m[2])
+                 #       player = media_player.play_media(m[2])
+
         time.sleep(SLEEP_DELAY)
 
 
