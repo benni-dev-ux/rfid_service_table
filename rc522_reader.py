@@ -55,6 +55,14 @@ def main():
 
     global player
 
+    # Testvideo
+    media_list = []
+    test_video = "Testvideo", 1096175, "/home/pi/rfid_service_table/assets/testvideo.mp4"
+    media_list.append(test_video)
+
+
+    #media_list = media.media_list.list
+
     button1 = Button(black_button, hold_time=2)
     button2 = Button(yellow_button, bounce_time=0.1)
     button3 = Button(blue_button, bounce_time=0.1)
@@ -111,7 +119,6 @@ def read_tag(reader):
         return 0
 
 
-media_list = media.media_list.list
 
 if __name__ == "__main__":
     main()
