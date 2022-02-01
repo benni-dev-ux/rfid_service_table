@@ -12,11 +12,11 @@ import neopixel
 pixel_pin = board.D18
 
 # The number of NeoPixels
-num_pixels = 30
+num_pixels = 32
 
 # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
-ORDER = neopixel.GRB
+ORDER = neopixel.RGB
 
 pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
@@ -56,23 +56,23 @@ def rainbow_cycle(wait):
 
 while True:
     # Comment this line out if you have RGBW/GRBW NeoPixels
-    #pixels.fill((255, 0, 0))
+    pixels.fill((255, 0, 0))
     # Uncomment this line if you have RGBW/GRBW NeoPixels
-    pixels.fill((255, 0, 0, 0))
+    #pixels.fill((255, 0, 0, 0))
     pixels.show()
     time.sleep(1)
 
     # Comment this line out if you have RGBW/GRBW NeoPixels
-    #pixels.fill((0, 255, 0))
+    pixels.fill((0, 255, 0))
     # Uncomment this line if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 255, 0, 0))
+    #pixels.fill((0, 255, 0, 0))
     pixels.show()
     time.sleep(1)
 
     # Comment this line out if you have RGBW/GRBW NeoPixels
-    #pixels.fill((0, 0, 255))
+    pixels.fill((0, 0, 255))
     # Uncomment this line if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 0, 255, 0))
+    #pixels.fill((0, 0, 255, 0))
     pixels.show()
     time.sleep(1)
 

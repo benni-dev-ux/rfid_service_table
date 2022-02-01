@@ -3,9 +3,18 @@ import neopixel
 import time
 
 
-pixels = neopixel.NeoPixel(board.D18, 32)
+pixel_pin = board.D18
+num_pixels = 32
+ORDER = neopixel.RGB
 
-for i in range(32):
+pixels = neopixel.NeoPixel(
+    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
+)
+
+
+pixels.fill((255,0,0))
+
+#for i in range(32):
     
-    pixels[i] = (0,255,0)
-    time.sleep(1)
+ #   pixels[i] = (0,255,0)
+  #  time.sleep(1)
