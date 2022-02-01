@@ -1,7 +1,7 @@
-import board
-import neopixel
 import time
 
+import board
+import neopixel
 
 gpio_pin = board.D18
 num_leds = 32
@@ -13,21 +13,19 @@ pixels = neopixel.NeoPixel(
 
 
 def fill_light_ring(percentage, color):
-    filled = round((percentage * num_leds)/100)
+    """Fills up the tables lightring to given percentage"""
+    if percentage > 100 or percentage < 0:
+        percentage = 100
+
+    filled = round((percentage * num_leds) / 100)
 
     for i in range(filled):
-
-        pixels[i] = (color)
+        pixels[i] = color
         time.sleep(0.1)
         pixels.show()
 
 
 def turn_off_lights():
-    pixels.fill((0,0,0))
+    """turns off all leds"""
+    pixels.fill((0, 0, 0))
     pixels.show()
-    
-fill_light_ring(100,(0,0,255))
-
-
-
-

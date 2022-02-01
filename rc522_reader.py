@@ -4,6 +4,7 @@ from subprocess import check_call
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
 
+import light_control
 import media_player
 from screen_toggle import *
 
@@ -11,6 +12,7 @@ from screen_toggle import *
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 FORCE_ANALOG_SOUND = False
+LIGHTRING_COLOR = (0, 0, 255)
 SLEEP_DELAY = 0.2
 
 # Button Pins
@@ -51,6 +53,9 @@ def main():
     if START_UP_SOUND:
         media_player.play_sound_effect("startup.wav")
     print("\n RFID Player Ready")
+
+    # Light Up the Table
+    light_control.fill_light_ring(60, LIGHTRING_COLOR)
 
     global player
 
