@@ -38,12 +38,12 @@ def pause_button():
         player.play_pause()
 
 
-def back_button():
+def stop_button():
     print("Stopping all Media")
     media_player.stop_all_media()
 
 
-def forward_button():
+def placeholder_button():
     print("forward button pressed")
     if SCREEN_TURN_OFF:
         toggle_display(True)
@@ -73,9 +73,9 @@ def main():
 
     # Mapping functions to button presses
     button1.when_pressed = power_button
-    button2.when_pressed = back_button
+    button2.when_pressed = stop_button
     button3.when_pressed = pause_button
-    button4.when_pressed = forward_button
+    button4.when_pressed = placeholder_button
 
     reader = SimpleMFRC522()
 
