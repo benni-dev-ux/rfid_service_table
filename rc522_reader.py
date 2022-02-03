@@ -6,14 +6,17 @@ from mfrc522 import SimpleMFRC522
 
 import light_control
 import media_player
-from screen_toggle import *
 
 # Settings
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 FORCE_ANALOG_SOUND = False
-LIGHTRING_COLOR = (0, 0, 255)
+LIGHTRING_PERCENTAGE = 100
 SLEEP_DELAY = 0.2
+
+# light colors
+light_colors = light_control.colors
+active_color = 0
 
 # Button Pins
 black_button = 19
@@ -45,8 +48,14 @@ def stop_button():
 
 def placeholder_button():
     print("forward button pressed")
-    if SCREEN_TURN_OFF:
-        toggle_display(True)
+
+    global active_color
+    active_color += 1
+    if active_color >= 14:
+        active_color = 0
+
+    light_control.fill_light_ring(
+        LIGHTRING_PERCENTAGE, light_colors[active_color])
 
 
 def main():
@@ -55,7 +64,8 @@ def main():
     print("\n RFID Player Ready")
 
     # Light Up the Table
-    light_control.fill_light_ring(60, LIGHTRING_COLOR)
+    light_control.fill_light_ring(
+        LIGHTRING_PERCENTAGE, light_colors[active_color])
 
     global player
 

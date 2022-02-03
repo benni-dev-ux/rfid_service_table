@@ -21,7 +21,7 @@ def fill_light_ring(percentage, color):
 
     for i in range(filled):
         pixels[i] = color
-        time.sleep(0.1)
+        time.sleep(0.05)
         pixels.show()
 
 
@@ -29,3 +29,23 @@ def turn_off_lights():
     """turns off all leds"""
     pixels.fill((0, 0, 0))
     pixels.show()
+
+
+colors = [
+    (255, 0, 0),
+    (0, 255, 0),
+    (0, 0, 255),
+    (255, 255, 0),
+    (0, 255, 255),
+    (255, 0, 255),
+    (192, 192, 192),
+    (128, 128, 128),
+    (128, 0, 0),
+    (128, 128, 0),
+    (0, 128, 0),
+    (128, 0, 128),
+    (0, 128, 128),
+    (0, 0, 128),
+    (0, 0, 0),
+
+]
