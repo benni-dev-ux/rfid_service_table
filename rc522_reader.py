@@ -77,9 +77,9 @@ def main():
     # media_list = media.media_list.list
 
     button1 = Button(black_button, hold_time=2)
-    button2 = Button(yellow_button, bounce_time=0.1)
+    button2 = Button(green_button, bounce_time=0.1)
     button3 = Button(blue_button, bounce_time=0.1)
-    button4 = Button(green_button, bounce_time=0.1)
+    button4 = Button(yellow_button, bounce_time=0.1)
 
     # Mapping functions to button presses
     button1.when_pressed = power_button
