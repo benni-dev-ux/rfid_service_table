@@ -31,7 +31,7 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
-def pause_button():
+def play_pause_button():
     print("Play/Pause")
 
     try:
@@ -86,7 +86,7 @@ def main():
     # Mapping functions to button presses
     button1.when_pressed = power_button
     button2.when_pressed = stop_button
-    button3.when_pressed = pause_button
+    button3.when_pressed = play_pause_button
     button4.when_pressed = placeholder_button
 
     reader = SimpleMFRC522()
@@ -102,16 +102,16 @@ def main():
         last_codes_lst.pop()
 
         comp = sum(last_codes_lst)
-        if comp == 0:
+        if comp == 0:  # if sum of last 5 codes =0 -> Pause Media
             if not is_paused:
-                pause_button()
+                play_pause_button()
                 is_paused = True
-        # Trigger Play Command if code occurs exactly once in list of last codes
-        elif comp == code:
+
+        elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
             media_player.play_sound_effect("beep.mp3")
             is_paused = False
             if comp == last_media_code:
-                pause_button()
+                play_pause_button()
                 print("resuming")
             else:
                 last_media_code = code
@@ -123,10 +123,11 @@ def main():
 
                 print("starting" + str(code))
 
-        time.sleep(SLEEP_DELAY)
+        time.sleep(SLEEP_DELAY)  # resume after delay
 
 
 def read_tag(reader):
+    """returns id from rfid tag if null returns 0"""
     if reader.read_id_no_block():
         return reader.read_id()
     else:
