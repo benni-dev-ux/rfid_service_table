@@ -10,6 +10,7 @@ import media_player
 # Settings
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
+TABLE_RINGLIGHT = True
 FORCE_ANALOG_SOUND = False
 LIGHTRING_PERCENTAGE = 100
 SLEEP_DELAY = 0.2
@@ -64,8 +65,9 @@ def main():
     print("\n RFID Player Ready")
 
     # Light Up the Table
-    light_control.fill_light_ring(
-        LIGHTRING_PERCENTAGE, light_colors[active_color])
+    if TABLE_RINGLIGHT:
+        light_control.fill_light_ring(
+            LIGHTRING_PERCENTAGE, light_colors[active_color])
 
     global player
 
