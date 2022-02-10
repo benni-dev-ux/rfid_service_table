@@ -15,7 +15,7 @@ FORCE_ANALOG_SOUND = False
 SLEEP_DELAY = 0.2
 
 # light ring
-LIGHT_COLOR = light_control.colors[12]  # teal
+LIGHT_COLOR = light_control.colors["teal"]
 LIGHTRING_PERCENTAGE = 10
 
 # Button Pins
