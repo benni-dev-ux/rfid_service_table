@@ -12,12 +12,11 @@ SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 TABLE_RINGLIGHT = True
 FORCE_ANALOG_SOUND = False
-LIGHTRING_PERCENTAGE = 100
 SLEEP_DELAY = 0.2
 
-# light colors
-light_colors = light_control.colors
-active_color = 0
+# light ring
+LIGHT_COLOR = light_control.colors[12]  # teal
+LIGHTRING_PERCENTAGE = 10
 
 # Button Pins
 black_button = 19
@@ -48,15 +47,15 @@ def stop_button():
 
 
 def placeholder_button():
-    print("forward button pressed")
+    print("Adjusting lightring")
 
-    global active_color
-    active_color += 1
-    if active_color >= 14:
-        active_color = 0
+    global LIGHTRING_PERCENTAGE
+    LIGHTRING_PERCENTAGE += 10
+    if LIGHTRING_PERCENTAGE > 100:
+        LIGHTRING_PERCENTAGE = 0
 
     light_control.fill_light_ring(
-        LIGHTRING_PERCENTAGE, light_colors[active_color])
+        LIGHTRING_PERCENTAGE, LIGHT_COLOR)
 
 
 def main():
@@ -67,7 +66,7 @@ def main():
     # Light Up the Table
     if TABLE_RINGLIGHT:
         light_control.fill_light_ring(
-            LIGHTRING_PERCENTAGE, light_colors[active_color])
+            LIGHTRING_PERCENTAGE, LIGHT_COLOR)
 
     global player
 
