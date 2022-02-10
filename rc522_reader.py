@@ -11,7 +11,7 @@ import media_player
 # Settings
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
-TABLE_RINGLIGHT = True
+START_UP_ANIMATION = True
 FORCE_ANALOG_SOUND = False
 SLEEP_DELAY = 0.2
 
@@ -61,14 +61,16 @@ def placeholder_button():
 
 def main():
     try:
+
+
+        # Simple start up Animation
+        if START_UP_ANIMATION:
+            light_control.fill_light_ring(100, light_control.colors["Navy"])
+            light_control.fill_light_ring(LIGHTRING_PERCENTAGE, LIGHT_COLOR)
+            
         if START_UP_SOUND:
             media_player.play_sound_effect("startup.wav")
-        print("\n RFID Player Ready")
-
-        # Light Up the Table
-        if TABLE_RINGLIGHT:
-            light_control.fill_light_ring(
-                LIGHTRING_PERCENTAGE, LIGHT_COLOR)
+            print("\n RFID Player Ready")
 
         global player
 
