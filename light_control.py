@@ -19,9 +19,12 @@ def fill_light_ring(percentage, color):
 
     filled = round((percentage * num_leds) / 100)
 
-    for i in range(filled):
-        pixels[i] = color
-        time.sleep(0.05)
+    for i in range(num_leds):
+        if i<=filled:
+            pixels[i] = color
+        else:
+            pixels[i] = (0,0,0)
+        time.sleep(0.02)
         pixels.show()
 
 
