@@ -62,3 +62,4 @@ def stop_all_media():
 
     command = "sudo killall -s 9 omxplayer.bin"
     os.system(command)
+    os.system("clear")
