@@ -28,6 +28,7 @@ yellow_button = 6
 
 def power_button():
     print("Shutting down the Device")
+    light_control.turn_off_lights()
     check_call(['sudo', 'poweroff'])
 
 
