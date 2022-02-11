@@ -65,7 +65,7 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            light_control.fill_light_ring(100, light_control.colors["Navy"])
+            light_control.fill_light_ring(100, LIGHT_COLOR)
             light_control.fill_light_ring(LIGHTRING_PERCENTAGE, LIGHT_COLOR)
 
         if START_UP_SOUND:
