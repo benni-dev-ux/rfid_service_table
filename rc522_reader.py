@@ -111,7 +111,7 @@ def main():
                     is_paused = True
 
             elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
-                media_player.play_sound_effect("beep.mp3")
+
                 is_paused = False
                 if comp == last_media_code:
                     play_pause_button()
@@ -123,7 +123,7 @@ def main():
                         if m[1] == code:
                             print("Playing " + m[0] + " at " + m[2])
                         player = media_player.play_media(m[2])
-
+                    media_player.play_sound_effect("beep.mp3")
                     print("starting" + str(code))
 
             time.sleep(SLEEP_DELAY)  # resume after delay
