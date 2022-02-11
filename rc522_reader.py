@@ -20,10 +20,10 @@ LIGHT_COLOR = light_control.colors["Teal"]
 LIGHTRING_PERCENTAGE = 10
 
 # Button Pins
-black_button = 19
-green_button = 13
-blue_button = 26
-yellow_button = 6
+power_button_pin = 19
+stop_button_pin = 13
+pause_button_pin = 26
+light_button_pin = 6
 
 
 def power_button():
@@ -81,10 +81,10 @@ def main():
 
         # media_list = media.media_list.list
 
-        button1 = Button(black_button, hold_time=2)
-        button2 = Button(green_button, bounce_time=0.1)
-        button3 = Button(blue_button, bounce_time=0.1)
-        button4 = Button(yellow_button, bounce_time=0.1)
+        button1 = Button(power_button_pin, hold_time=2)
+        button2 = Button(stop_button_pin, bounce_time=0.1)
+        button3 = Button(pause_button_pin, bounce_time=0.1)
+        button4 = Button(light_button_pin, bounce_time=0.1)
 
         # Mapping functions to button presses
         button1.when_pressed = power_button
