@@ -1,5 +1,5 @@
-import time
 import sys
+import time
 from subprocess import check_call
 
 from gpiozero import Button
@@ -63,12 +63,11 @@ def placeholder_button():
 def main():
     try:
 
-
         # Simple start up Animation
         if START_UP_ANIMATION:
             light_control.fill_light_ring(100, light_control.colors["Navy"])
             light_control.fill_light_ring(LIGHTRING_PERCENTAGE, LIGHT_COLOR)
-            
+
         if START_UP_SOUND:
             media_player.play_sound_effect("startup.wav")
             print("\n RFID Player Ready")
@@ -129,8 +128,8 @@ def main():
 
             time.sleep(SLEEP_DELAY)  # resume after delay
     except KeyboardInterrupt:
-            light_control.turn_off_lights()
-            sys.exit()
+        light_control.turn_off_lights()
+        sys.exit()
 
 
 def read_tag(reader):
