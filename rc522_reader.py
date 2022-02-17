@@ -122,9 +122,9 @@ def main():
                     for m in media_list:
                         if m[1] == code:
                             print("Playing " + m[0] + " at " + m[2])
-                        player = media_player.play_media(m[2])
-                    media_player.play_sound_effect("beep.mp3")
-                    print("starting" + str(code))
+                            player = media_player.play_media(m[2])
+                            media_player.play_sound_effect("beep.mp3")
+                            print("starting" + str(code))
 
             time.sleep(SLEEP_DELAY)  # resume after delay
     except KeyboardInterrupt:
