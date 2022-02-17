@@ -1,5 +1,6 @@
 import sys
 import time
+import threading
 from subprocess import check_call
 
 from gpiozero import Button
@@ -49,16 +50,17 @@ def stop_button():
 
 
 def placeholder_button():
-    print("Adjusting lightring")
+    print("Starting  lightring")
 
-    global LIGHTRING_PERCENTAGE
-    LIGHTRING_PERCENTAGE += 10
-    if LIGHTRING_PERCENTAGE > 100:
-        LIGHTRING_PERCENTAGE = 0
-
+    fill_light(25, LIGHT_COLOR)
+    timer1 = threading.Timer(5*60*1000,fill_light(100, LIGHT_COLOR))
+    timer1.start()
+    timer2 = threading.Timer(10*60*1000,fill_light(50, LIGHT_COLOR))
+    timer2.start()
+    
+def fill_light(percentage, color):
     light_control.fill_light_ring(
-        LIGHTRING_PERCENTAGE, LIGHT_COLOR)
-
+    percentage, color)
 
 def main():
     try:
@@ -66,7 +68,7 @@ def main():
         # Simple start up Animation
         if START_UP_ANIMATION:
             light_control.fill_light_ring(100, LIGHT_COLOR)
-            light_control.fill_light_ring(LIGHTRING_PERCENTAGE, LIGHT_COLOR)
+            light_control.fill_light_ring(0, LIGHT_COLOR)
 
         if START_UP_SOUND:
             media_player.play_sound_effect("startup.wav")
