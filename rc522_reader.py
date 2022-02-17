@@ -53,14 +53,17 @@ def placeholder_button():
     print("Starting  lightring")
 
     fill_light(25, LIGHT_COLOR)
-    timer1 = threading.Timer(5*60*1000,fill_light(100, LIGHT_COLOR))
-    timer1.start()
-    timer2 = threading.Timer(10*60*1000,fill_light(50, LIGHT_COLOR))
-    timer2.start()
-    
-def fill_light(percentage, color):
+    timed_thread1 = threading.Thread(fill_light(100, LIGHT_COLOR, 5*60))
+    timed_thread2 = threading.Thread(fill_light(50, LIGHT_COLOR, 10*60))
+    timed_thread1.start()
+    timed_thread2.start()
+
+
+def fill_light(percentage, color, delay):
+    time.sleep(delay)
     light_control.fill_light_ring(
-    percentage, color)
+        percentage, color)
+
 
 def main():
     try:
