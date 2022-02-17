@@ -1,6 +1,6 @@
 import sys
-import time
 import threading
+import time
 from subprocess import check_call
 
 from gpiozero import Button
@@ -18,7 +18,6 @@ SLEEP_DELAY = 0.2
 
 # light ring
 LIGHT_COLOR = light_control.colors["Teal"]
-LIGHTRING_PERCENTAGE = 10
 
 # Button Pins
 power_button_pin = 19
@@ -52,9 +51,9 @@ def stop_button():
 def placeholder_button():
     print("Starting  lightring")
 
-    fill_light(25, LIGHT_COLOR)
-    timed_thread1 = threading.Thread(fill_light(100, LIGHT_COLOR, 5*60))
-    timed_thread2 = threading.Thread(fill_light(50, LIGHT_COLOR, 10*60))
+    fill_light(25, LIGHT_COLOR, 0)
+    timed_thread1 = threading.Thread(fill_light(100, LIGHT_COLOR, 5 * 60))
+    timed_thread2 = threading.Thread(fill_light(50, LIGHT_COLOR, 10 * 60))
     timed_thread1.start()
     timed_thread2.start()
 
