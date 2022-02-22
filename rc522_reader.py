@@ -13,7 +13,7 @@ import media_player
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 START_UP_ANIMATION = True
-FORCE_ANALOG_SOUND = False
+FORCE_ANALOG_SOUND = True
 SLEEP_DELAY = 0.2
 
 # light ring
