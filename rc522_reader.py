@@ -81,7 +81,9 @@ def main():
         # Testvideo
         media_list = []
         test_video = "Testvideo", 524887201261, "/home/pi/rfid_service_table/assets/testvideo.mp4"
+        test_audio = "Testaudio", 252006438210, "/home/pi/rfid_service_table/assets/testaudio.mp3"
         media_list.append(test_video)
+        media_list.append(test_audio)
 
         # media_list = media.media_list.list
 
