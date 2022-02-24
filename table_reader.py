@@ -45,6 +45,7 @@ def play_media(filename):
 
 
 def stop_media():
+    print("Stopping all media")
     global media
     media.stop()
     global last_media_code
@@ -66,12 +67,6 @@ def power_button():
     print("Shutting down the Device")
     light_control.turn_off_lights()
     check_call(['sudo', 'poweroff'])
-
-
-def stop_button():
-    print("Stopping all Media")
-    if not stop_media():
-        print("NO")
 
 
 def placeholder_button():
@@ -108,14 +103,8 @@ def main():
             play_media("startup.wav")
             print("\n RFID Player Ready")
 
-        # Testvideo
-        media_list = []
-        test_video = "Testvideo", 524887201261, "testvideo.mp4"
-        test_audio = "Testaudio", 252006438210, "testaudio.mp3"
-        media_list.append(test_video)
-        media_list.append(test_audio)
-
-        # media_list = media.media_list.list
+        # Link to media list 
+        media_list = media.media_list.list
 
         button1 = Button(power_button_pin, hold_time=2)
         button2 = Button(stop_button_pin, bounce_time=0.1)
@@ -124,7 +113,7 @@ def main():
 
         # Mapping functions to button presses
         button1.when_pressed = power_button
-        button2.when_pressed = stop_button
+        button2.when_pressed = stop_media
         button3.when_pressed = play_pause
         button4.when_pressed = placeholder_button
 
@@ -161,7 +150,7 @@ def main():
                             play_media("beep.mp3")
                             print("Playing " + m[0] + " at " + m[2])
                             play_media(m[2])
-                     
+
                             print("starting" + str(code))
                             clear_console()
 
