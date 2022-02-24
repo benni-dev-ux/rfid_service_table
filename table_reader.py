@@ -59,18 +59,13 @@ def play_pause():
 
     if media is not None:
         media.pause()
+    clear_console()
 
 
 def power_button():
     print("Shutting down the Device")
     light_control.turn_off_lights()
     check_call(['sudo', 'poweroff'])
-
-
-def play_pause_button():
-    print("Play/Pause")
-
-    play_pause()
 
 
 def stop_button():
@@ -130,7 +125,7 @@ def main():
         # Mapping functions to button presses
         button1.when_pressed = power_button
         button2.when_pressed = stop_button
-        button3.when_pressed = play_pause_button
+        button3.when_pressed = play_pause
         button4.when_pressed = placeholder_button
 
         reader = SimpleMFRC522()
@@ -149,14 +144,14 @@ def main():
             comp = sum(last_codes_lst)
             if comp == 0:  # if sum of last 5 codes =0 -> Pause Media
                 if not is_paused:
-                    play_pause_button()
+                    play_pause()
                     is_paused = True
 
             elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
 
                 is_paused = False
                 if comp == last_media_code:
-                    play_pause_button()
+                    play_pause()
                     print("resuming")
                 else:
                     last_media_code = code
