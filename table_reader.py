@@ -15,7 +15,7 @@ SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 START_UP_ANIMATION = False
 FORCE_ANALOG_SOUND = False
-CONSOLE_OUTPUT = True
+CONSOLE_OUTPUT = False
 SLEEP_DELAY = 0.2  # Delay between RFID Scans
 
 FILEPATH = "/home/pi/rfid_service_table/assets/"
@@ -163,9 +163,10 @@ def main():
                     # Check if found code occurs in media list
                     for m in media_list:
                         if m[1] == code:
+                            play_media("beep.mp3")
                             print("Playing " + m[0] + " at " + m[2])
                             play_media(m[2])
-                            play_media("beep.mp3")
+                     
                             print("starting" + str(code))
                             clear_console()
 
