@@ -1,19 +1,20 @@
 import sys
 import threading
 import time
+import vlc
 from subprocess import check_call
 
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
 
 import light_control
-import vlc_media_player
+
 
 # Settings
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
-START_UP_ANIMATION = True
-FORCE_ANALOG_SOUND = True
+START_UP_ANIMATION = False
+FORCE_ANALOG_SOUND = False
 SLEEP_DELAY = 0.2
 
 # light ring
@@ -25,6 +26,45 @@ stop_button_pin = 13
 pause_button_pin = 26
 light_button_pin = 6
 
+global media
+last_media_code = -1
+
+
+def play_media(filename):
+    # creating vlc media player object
+    filename = "/home/pi/rfid_service_table/assets/" + filename
+
+    #if media.is_playing():
+     #   media.stop()
+    global media
+    media = vlc.MediaPlayer(filename)
+    media.set_fullscreen(True)
+
+    # start playing video
+    media.play()
+
+
+
+
+def stop_media():
+    global media
+    media.stop()
+    global last_media_code
+    last_media_code =-1 
+    
+
+
+def play_pause():
+    global media
+
+    
+    print("Play/Pause")
+    
+    if media is not None:
+         media.pause()
+
+
+
 
 def power_button():
     print("Shutting down the Device")
@@ -34,13 +74,14 @@ def power_button():
 
 def play_pause_button():
     print("Play/Pause")
-
-    vlc_media_player.play_pause()
+    
+    play_pause()
 
 
 def stop_button():
     print("Stopping all Media")
-    vlc_media_player.stop()
+    if not stop_media():
+        print ("NO")
 
 
 def placeholder_button():
@@ -68,13 +109,14 @@ def main():
             light_control.fill_light_ring(0, LIGHT_COLOR)
 
         if START_UP_SOUND:
-            vlc_media_player.play_media("startup.wav")
+            global media
+            media = play_media("startup.wav")
             print("\n RFID Player Ready")
 
         # Testvideo
         media_list = []
-        test_video = "Testvideo", 524887201261, "/home/pi/rfid_service_table/assets/testvideo.mp4"
-        test_audio = "Testaudio", 252006438210, "/home/pi/rfid_service_table/assets/testaudio.mp3"
+        test_video = "Testvideo", 524887201261, "testvideo.mp4"
+        test_audio = "Testaudio", 252006438210, "testaudio.mp3"
         media_list.append(test_video)
         media_list.append(test_audio)
 
@@ -94,6 +136,7 @@ def main():
         reader = SimpleMFRC522()
 
         last_codes_lst = [-1, -1, -1, -1, -1]
+        global last_media_code
         last_media_code = -1
         is_paused = False
 
@@ -121,8 +164,8 @@ def main():
                     for m in media_list:
                         if m[1] == code:
                             print("Playing " + m[0] + " at " + m[2])
-                            player = vlc_media_player.play_media(m[2])
-                            vlc_media_player.play_media("beep.mp3")
+                            player = play_media(m[2])
+                            #play_media("beep.mp3")
                             print("starting" + str(code))
 
             time.sleep(SLEEP_DELAY)  # resume after delay
