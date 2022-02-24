@@ -2,8 +2,8 @@ import os
 
 from omxplayer.player import OMXPlayer
 
-import rc522_reader
-from rc522_reader import SCREEN_TURN_OFF
+from deprecated import rc522_reader
+from deprecated.rc522_reader import SCREEN_TURN_OFF
 from screen_toggle import *
 
 

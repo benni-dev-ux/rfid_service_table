@@ -1,21 +1,24 @@
+import os
 import sys
 import threading
 import time
-import vlc
 from subprocess import check_call
 
+import vlc
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
 
 import light_control
-
 
 # Settings
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 START_UP_ANIMATION = False
 FORCE_ANALOG_SOUND = False
-SLEEP_DELAY = 0.2
+CONSOLE_OUTPUT = True
+SLEEP_DELAY = 0.2  # Delay between RFID Scans
+
+FILEPATH = "/home/pi/rfid_service_table/assets/"
 
 # light ring
 LIGHT_COLOR = light_control.colors["Teal"]
@@ -31,11 +34,8 @@ last_media_code = -1
 
 
 def play_media(filename):
-    # creating vlc media player object
-    filename = "/home/pi/rfid_service_table/assets/" + filename
+    filename = FILEPATH + filename
 
-    #if media.is_playing():
-     #   media.stop()
     global media
     media = vlc.MediaPlayer(filename)
     media.set_fullscreen(True)
@@ -44,26 +44,21 @@ def play_media(filename):
     media.play()
 
 
-
-
 def stop_media():
     global media
     media.stop()
     global last_media_code
-    last_media_code =-1 
-    
+    last_media_code = -1
+    clear_console()
 
 
 def play_pause():
     global media
 
-    
     print("Play/Pause")
-    
+
     if media is not None:
-         media.pause()
-
-
+        media.pause()
 
 
 def power_button():
@@ -74,14 +69,14 @@ def power_button():
 
 def play_pause_button():
     print("Play/Pause")
-    
+
     play_pause()
 
 
 def stop_button():
     print("Stopping all Media")
     if not stop_media():
-        print ("NO")
+        print("NO")
 
 
 def placeholder_button():
@@ -100,6 +95,11 @@ def fill_light(percentage, color, delay):
         percentage, color)
 
 
+def clear_console():
+    if not CONSOLE_OUTPUT:
+        os.system("clear")
+
+
 def main():
     try:
 
@@ -110,7 +110,7 @@ def main():
 
         if START_UP_SOUND:
             global media
-            media = play_media("startup.wav")
+            play_media("startup.wav")
             print("\n RFID Player Ready")
 
         # Testvideo
@@ -164,9 +164,10 @@ def main():
                     for m in media_list:
                         if m[1] == code:
                             print("Playing " + m[0] + " at " + m[2])
-                            player = play_media(m[2])
-                            #play_media("beep.mp3")
+                            play_media(m[2])
+                            play_media("beep.mp3")
                             print("starting" + str(code))
+                            clear_console()
 
             time.sleep(SLEEP_DELAY)  # resume after delay
     except KeyboardInterrupt:
