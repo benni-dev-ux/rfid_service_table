@@ -13,7 +13,7 @@ import media_player
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 START_UP_ANIMATION = True
-FORCE_ANALOG_SOUND = False
+FORCE_ANALOG_SOUND = True
 SLEEP_DELAY = 0.2
 
 # light ring
@@ -81,7 +81,9 @@ def main():
         # Testvideo
         media_list = []
         test_video = "Testvideo", 524887201261, "/home/pi/rfid_service_table/assets/testvideo.mp4"
+        test_audio = "Testaudio", 252006438210, "/home/pi/rfid_service_table/assets/testaudio.mp3"
         media_list.append(test_video)
+        media_list.append(test_audio)
 
         # media_list = media.media_list.list
 
