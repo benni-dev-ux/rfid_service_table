@@ -6,8 +6,7 @@ NEOPIXEL:
 OMXPLAYER:
     sudo apt update
     sudo apt upgrade
-follow:
-https://github.com/popcornmix/omxplayer
+    sudo apt install omxplayer
 
 OMX-wrapper
     sudo pip3 install omxplayer-wrapper
