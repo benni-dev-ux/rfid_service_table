@@ -18,7 +18,7 @@ FORCE_ANALOG_SOUND = False
 CONSOLE_OUTPUT = False
 SLEEP_DELAY = 0.2  # Delay between RFID Scans
 
-FILEPATH = "/home/pi/rfid_service_table/assets/"
+FILEPATH = "/home/pi/rfid_service_table/media/"
 
 # light ring
 LIGHT_COLOR = light_control.colors["Teal"]
@@ -103,7 +103,7 @@ def main():
             play_media("startup.wav")
             print("\n RFID Player Ready")
 
-        # Link to media list 
+        # Link to media list
         media_list = media.media_list.list
 
         button1 = Button(power_button_pin, hold_time=2)
