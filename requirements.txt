@@ -1,4 +1,3 @@
 gpiozero~=1.6.2
-omxplayer-wrapper~=0.3.3
 python-vlc~=3.0.1
 mfrc~=0-0.7
