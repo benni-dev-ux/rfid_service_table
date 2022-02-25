@@ -8,12 +8,14 @@ import vlc
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
 
+import media.media_list
+
 import light_control
 
 # Settings
 SCREEN_TURN_OFF = False
 START_UP_SOUND = True
-START_UP_ANIMATION = False
+START_UP_ANIMATION = True
 FORCE_ANALOG_SOUND = False
 CONSOLE_OUTPUT = False
 SLEEP_DELAY = 0.2  # Delay between RFID Scans
@@ -29,37 +31,37 @@ stop_button_pin = 13
 pause_button_pin = 26
 light_button_pin = 6
 
-global media
+global media_player
 last_media_code = -1
 
 
 def play_media(filename):
     filename = FILEPATH + filename
 
-    global media
-    media = vlc.MediaPlayer(filename)
-    media.set_fullscreen(True)
+    global media_player
+    media_player = vlc.MediaPlayer(filename)
+    media_player.set_fullscreen(True)
 
     # start playing video
-    media.play()
+    media_player.play()
 
 
 def stop_media():
     print("Stopping all media")
-    global media
-    media.stop()
+    global media_player
+    media_player.stop()
     global last_media_code
     last_media_code = -1
     clear_console()
 
 
 def play_pause():
-    global media
+    global media_player
 
     print("Play/Pause")
 
-    if media is not None:
-        media.pause()
+    if media_player is not None:
+        media_player.pause()
     clear_console()
 
 
@@ -99,12 +101,12 @@ def main():
             light_control.fill_light_ring(0, LIGHT_COLOR)
 
         if START_UP_SOUND:
-            global media
+            global media_player
             play_media("startup.wav")
             print("\n RFID Player Ready")
 
         # Link to media list
-        media_list = media.media_list.list
+        tag_list = media.media_list.list
 
         button1 = Button(power_button_pin, hold_time=2)
         button2 = Button(stop_button_pin, bounce_time=0.1)
@@ -145,7 +147,7 @@ def main():
                 else:
                     last_media_code = code
                     # Check if found code occurs in media list
-                    for m in media_list:
+                    for m in tag_list:
                         if m[1] == code:
                             play_media("beep.mp3")
                             print("Playing " + m[0] + " at " + m[2])
