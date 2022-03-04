@@ -1,16 +1,16 @@
 import os
 import sys
-import threading
 import time
+from datetime import timedelta
 from subprocess import check_call
 
 import vlc
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
-
-import media.media_list
+from timeloop import Timeloop
 
 import light_control
+import media.media_list
 
 # Settings
 SCREEN_TURN_OFF = False
@@ -74,17 +74,17 @@ def power_button():
 def placeholder_button():
     print("Starting  lightring")
 
-    fill_light(25, LIGHT_COLOR, 0)
-    timed_thread1 = threading.Thread(fill_light(100, LIGHT_COLOR, 5 * 60))
-    timed_thread2 = threading.Thread(fill_light(50, LIGHT_COLOR, 10 * 60))
-    timed_thread1.start()
-    timed_thread2.start()
+    tl = Timeloop()
+    lightring_counter = 0
+    lightring_fill_amounts = [5, 32, 12, 20, 15, 10, 5, 12, 17, 18, 35, 32]
 
+    @tl.job(interval=timedelta(minutes=2))
+    def fill_light():
+        if lightring_counter == len(lightring_fill_amounts):
+            lightring_counter = 0
 
-def fill_light(percentage, color, delay):
-    time.sleep(delay)
-    light_control.fill_light_ring(
-        percentage, color)
+        light_control.fill_light_ring(lightring_fill_amounts[lightring_counter], LIGHT_COLOR)
+        lightring_counter += 1
 
 
 def clear_console():
