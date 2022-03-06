@@ -39,6 +39,7 @@ lightring_fill_amounts = [5, 32, 12, 20, 15, 10, 5, 12, 17, 18, 35, 32]
 
 tl = Timeloop()
 
+
 def play_media(filename):
     filename = FILEPATH + filename
 
@@ -77,7 +78,6 @@ def power_button():
 
 @tl.job(interval=timedelta(seconds=2))
 def fill_light():
-
     global lightring_counter
     global lightring_fill_amounts
     if lightring_counter == len(lightring_fill_amounts):
@@ -85,14 +85,14 @@ def fill_light():
 
     light_control.fill_light_ring(lightring_fill_amounts[lightring_counter], LIGHT_COLOR)
     lightring_counter += 1
-    
-def placeholder_button():
 
+
+def placeholder_button():
     global tl
     tl.start()
     clear_console()
-    
-    
+
+
 def clear_console():
     if not CONSOLE_OUTPUT:
         os.system("clear")
