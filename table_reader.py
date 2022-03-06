@@ -34,6 +34,10 @@ light_button_pin = 6
 global media_player
 last_media_code = -1
 
+lightring_counter = 0
+lightring_fill_amounts = [5, 32, 12, 20, 15, 10, 5, 12, 17, 18, 35, 32]
+
+tl = Timeloop()
 
 def play_media(filename):
     filename = FILEPATH + filename
@@ -71,22 +75,24 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
+@tl.job(interval=timedelta(seconds=2))
+def fill_light():
+
+    global lightring_counter
+    global lightring_fill_amounts
+    if lightring_counter == len(lightring_fill_amounts):
+        lightring_counter = 0
+
+    light_control.fill_light_ring(lightring_fill_amounts[lightring_counter], LIGHT_COLOR)
+    lightring_counter += 1
+    
 def placeholder_button():
-    print("Starting  lightring")
 
-    tl = Timeloop()
-    lightring_counter = 0
-    lightring_fill_amounts = [5, 32, 12, 20, 15, 10, 5, 12, 17, 18, 35, 32]
-
-    @tl.job(interval=timedelta(minutes=2))
-    def fill_light():
-        if lightring_counter == len(lightring_fill_amounts):
-            lightring_counter = 0
-
-        light_control.fill_light_ring(lightring_fill_amounts[lightring_counter], LIGHT_COLOR)
-        lightring_counter += 1
-
-
+    global tl
+    tl.start()
+    clear_console()
+    
+    
 def clear_console():
     if not CONSOLE_OUTPUT:
         os.system("clear")
@@ -159,6 +165,8 @@ def main():
             time.sleep(SLEEP_DELAY)  # resume after delay
     except KeyboardInterrupt:
         light_control.turn_off_lights()
+        global tl
+        tl.stop()
         sys.exit()
 
 
