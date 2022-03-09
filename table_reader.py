@@ -35,7 +35,7 @@ global media_player
 last_media_code = -1
 
 lightring_counter = 0
-lightring_fill_amounts = [5, 32, 12, 20, 15, 10, 5, 12, 17, 18, 35, 32]
+lightring_fill_amounts = [15, 100, 33, 63, 47, 30, 15, 33, 52, 55, 80, 100]
 
 tl = Timeloop()
 
