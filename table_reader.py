@@ -44,6 +44,9 @@ def play_media(filename):
     filename = FILEPATH + filename
 
     global media_player
+
+    if media_player is not None:
+        stop_media()
     media_player = vlc.MediaPlayer(filename)
     media_player.set_fullscreen(True)
 
