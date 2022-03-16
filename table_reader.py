@@ -43,10 +43,12 @@ tl = Timeloop()
 def play_media(filename):
     filename = FILEPATH + filename
 
-    global media_player
+    #global media_player
 
-    if media_player is not None:
-        stop_media()
+    #if media_player is not None:
+     #   stop_media()
+    global media_player
+    #media_player.stop()
     media_player = vlc.MediaPlayer(filename)
     media_player.set_fullscreen(True)
 
@@ -79,7 +81,7 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
-@tl.job(interval=timedelta(seconds=2))
+@tl.job(interval=timedelta(minutes=2))
 def fill_light():
     global lightring_counter
     global lightring_fill_amounts
@@ -158,6 +160,10 @@ def main():
                     # Check if found code occurs in media list
                     for m in tag_list:
                         if m[1] == code:
+                            global media_player
+                            if media_player is not None:
+                                media_player.stop()
+                            
                             play_media("beep.mp3")
                             print("Playing " + m[0] + " at " + m[2])
                             play_media(m[2])
