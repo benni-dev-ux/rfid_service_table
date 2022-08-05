@@ -25,19 +25,19 @@ def fill_light_ring(percentage, color):
             pixels[i] = color
         else:
             pixels[i] = (0, 0, 0)
-        time.sleep(0.02)
+
         pixels.show()
 
 
-def pulse_anim_light_ring(color):
+def pulse_anim_light_ring(color, length):
     pulse = Pulse(pixels, speed=0.1, color=color, period=3)
+    pulse.animate()
+    time.sleep(length)
 
-    while True:
-        pulse.animate()
 
-   # pixels.fill(color)
-   # pixels.setBrightness(0.3)
-   # pixels.show()
+# pixels.fill(color)
+# pixels.setBrightness(0.3)
+# pixels.show()
 
 
 def turn_off_lights():
