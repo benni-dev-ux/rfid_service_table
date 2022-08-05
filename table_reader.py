@@ -88,8 +88,9 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            light_control.fill_light_ring(100, LIGHT_COLOR)
-            light_control.fill_light_ring(0, LIGHT_COLOR)
+            #light_control.fill_light_ring(100, LIGHT_COLOR)
+            #light_control.fill_light_ring(0, LIGHT_COLOR)
+            light_control.pulse_anim_light_ring(LIGHT_COLOR)
 
         if START_UP_SOUND:
             global media_player
