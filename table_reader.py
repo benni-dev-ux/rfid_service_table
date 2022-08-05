@@ -1,13 +1,11 @@
 import os
 import sys
 import time
-from datetime import timedelta
 from subprocess import check_call
 
 import vlc
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
-
 
 import light_control
 import media.media_list
@@ -34,21 +32,12 @@ light_button_pin = 6
 global media_player
 last_media_code = -1
 
-lightring_counter = 0
-lightring_fill_amounts = [15, 100, 33, 63, 47, 30, 15, 33, 52, 55, 80, 100]
-
-
-
 
 def play_media(filename):
     filename = FILEPATH + filename
 
-    #global media_player
-
-    #if media_player is not None:
-     #   stop_media()
     global media_player
-    #media_player.stop()
+
     media_player = vlc.MediaPlayer(filename)
     media_player.set_fullscreen(True)
 
@@ -81,19 +70,11 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
-
 def fill_light():
-    global lightring_counter
-    global lightring_fill_amounts
-    if lightring_counter == len(lightring_fill_amounts):
-        lightring_counter = 0
-
-    light_control.fill_light_ring(lightring_fill_amounts[lightring_counter], LIGHT_COLOR)
-    lightring_counter += 1
+    light_control.fill_light_ring(50, LIGHT_COLOR)
 
 
 def placeholder_button():
-
     clear_console()
 
 
@@ -162,7 +143,7 @@ def main():
                             global media_player
                             if media_player is not None:
                                 media_player.stop()
-                            
+
                             play_media("beep.mp3")
                             print("Playing " + m[0] + " at " + m[2])
                             play_media(m[2])
