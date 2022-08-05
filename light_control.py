@@ -2,6 +2,7 @@ import time
 
 import board
 import neopixel
+from adafruit_led_animation.animation.pulse import Pulse
 
 gpio_pin = board.D18
 num_leds = 32
@@ -26,6 +27,17 @@ def fill_light_ring(percentage, color):
             pixels[i] = (0, 0, 0)
         time.sleep(0.02)
         pixels.show()
+
+
+def pulse_anim_light_ring(color):
+    pulse = Pulse(pixels, speed=0.1, color=color, period=3)
+
+    while True:
+        pulse.animate()
+
+   # pixels.fill(color)
+   # pixels.setBrightness(0.3)
+   # pixels.show()
 
 
 def turn_off_lights():
