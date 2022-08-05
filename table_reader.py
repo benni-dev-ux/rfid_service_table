@@ -7,7 +7,7 @@ from subprocess import check_call
 import vlc
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
-from timeloop import Timeloop
+
 
 import light_control
 import media.media_list
@@ -37,7 +37,7 @@ last_media_code = -1
 lightring_counter = 0
 lightring_fill_amounts = [15, 100, 33, 63, 47, 30, 15, 33, 52, 55, 80, 100]
 
-tl = Timeloop()
+
 
 
 def play_media(filename):
@@ -81,7 +81,7 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
-@tl.job(interval=timedelta(minutes=2))
+
 def fill_light():
     global lightring_counter
     global lightring_fill_amounts
@@ -93,8 +93,7 @@ def fill_light():
 
 
 def placeholder_button():
-    global tl
-    tl.start()
+
     clear_console()
 
 
@@ -174,8 +173,7 @@ def main():
             time.sleep(SLEEP_DELAY)  # resume after delay
     except KeyboardInterrupt:
         light_control.turn_off_lights()
-        global tl
-        tl.stop()
+
         sys.exit()
 
 
