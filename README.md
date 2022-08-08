@@ -29,6 +29,10 @@ Install dependencies from requirements.txt
 
     sudo pip3 install requirements.txt
 
+Enable SPI in raspi-config
+
+    sudo raspi-config
+
 Clone this repository into the home directory of the PI
 
     /home/pi/rfid_service_table
