@@ -11,7 +11,6 @@ import light_control
 import media.media_list
 
 # Settings
-SCREEN_TURN_OFF = False
 START_UP_SOUND = True
 START_UP_ANIMATION = True
 FORCE_ANALOG_SOUND = False
@@ -25,9 +24,6 @@ LIGHT_COLOR = light_control.colors["Teal"]
 
 # Button Pins
 power_button_pin = 19
-stop_button_pin = 13
-pause_button_pin = 26
-light_button_pin = 6
 
 global media_player
 last_media_code = -1
@@ -70,13 +66,6 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
-def fill_light():
-    light_control.fill_light_ring(50, LIGHT_COLOR)
-
-
-def placeholder_button():
-    clear_console()
-
 
 def clear_console():
     if not CONSOLE_OUTPUT:
@@ -100,16 +89,9 @@ def main():
         # Link to media list
         tag_list = media.media_list.list
 
-        button1 = Button(power_button_pin, hold_time=2)
-        button2 = Button(stop_button_pin, bounce_time=0.1)
-        button3 = Button(pause_button_pin, bounce_time=0.1)
-        button4 = Button(light_button_pin, bounce_time=0.1)
-
         # Mapping functions to button presses
+        button1 = Button(power_button_pin, hold_time=2)
         button1.when_pressed = power_button
-        button2.when_pressed = stop_media
-        button3.when_pressed = play_pause
-        button4.when_pressed = placeholder_button
 
         reader = SimpleMFRC522()
 
