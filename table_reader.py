@@ -15,7 +15,7 @@ START_UP_SOUND = True
 START_UP_ANIMATION = True
 FORCE_ANALOG_SOUND = False
 CONSOLE_OUTPUT = False
-SLEEP_DELAY = 0.2  # Delay between RFID Scans
+SLEEP_DELAY = 0.33  # Delay between RFID Scans
 
 FILEPATH = "/home/pi/rfid_service_table/media/"
 
@@ -95,7 +95,7 @@ def main():
 
         reader = SimpleMFRC522()
 
-        last_codes_lst = [-1, -1, -1, -1, -1]
+        last_codes_lst = [-1, -1, -1]
         global last_media_code
         last_media_code = -1
         is_paused = False
