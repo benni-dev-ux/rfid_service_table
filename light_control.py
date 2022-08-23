@@ -3,6 +3,7 @@ import neopixel
 from adafruit_led_animation.animation.colorcycle import ColorCycle
 from adafruit_led_animation.animation.pulse import Pulse
 from adafruit_led_animation.animation.sparkle import Sparkle
+from adafruit_led_animation.animation.sparklepulse import SparklePulse
 
 gpio_pin = board.D18
 num_leds = 32
@@ -44,7 +45,13 @@ def change_anim_light_ring(colors):
 
 
 def sparkle_anim_light_ring(color):
-    sparkle = Sparkle(pixels, speed=0.1, color=color, num_sparkles=3, mask=[0, 10])
+    sparkle = Sparkle(pixels, speed=0.1, color=color, num_sparkles=3, mask=range(31))
+
+    while True:
+        sparkle.animate()
+        
+def sparklePulse_anim_light_ring(color):
+    sparkle = SparklePulse(pixels, speed=0.1, color=color, period=10,min_intensity=0.0,max_intensity=1.0)
 
     while True:
         sparkle.animate()

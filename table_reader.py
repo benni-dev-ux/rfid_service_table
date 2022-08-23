@@ -76,9 +76,10 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            # light_control.pulse_anim_light_ring(LIGHT_COLOR)
-            # light_control.change_anim_light_ring( light_control.colors["Teal"], light_control.colors["Purple"], light_control.colors["Navy"])
-            light_control.sparkle_anim_light_ring(LIGHT_COLOR)
+            light_control.pulse_anim_light_ring(LIGHT_COLOR)
+            #light_control.change_anim_light_ring( [light_control.colors["Teal"], light_control.colors["Purple"], light_control.colors["Navy"]])
+            #light_control.sparkle_anim_light_ring(LIGHT_COLOR)
+            light_control.sparklepulse_anim_light_ring(LIGHT_COLOR)
 
         if START_UP_SOUND:
             global media_player
