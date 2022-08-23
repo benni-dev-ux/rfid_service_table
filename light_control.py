@@ -1,8 +1,8 @@
-import time
-
 import board
 import neopixel
+from adafruit_led_animation.animation.colorcycle import ColorCycle
 from adafruit_led_animation.animation.pulse import Pulse
+from adafruit_led_animation.animation.sparkle import Sparkle
 
 gpio_pin = board.D18
 num_leds = 32
@@ -29,15 +29,25 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
-def pulse_anim_light_ring(color, length):
+def pulse_anim_light_ring(color):
     pulse = Pulse(pixels, speed=0.1, color=color, period=3)
-    pulse.animate()
-    time.sleep(length)
+
+    while True:
+        pulse.animate()
 
 
-# pixels.fill(color)
-# pixels.setBrightness(0.3)
-# pixels.show()
+def change_anim_light_ring(colors):
+    colorcycle = ColorCycle(pixels, 0.5, colors=[colors[0], colors[1], colors[2]])
+
+    while True:
+        colorcycle.animate()
+
+
+def sparkle_anim_light_ring(color):
+    sparkle = Sparkle(pixels, speed=0.1, color=color, num_sparkles=3, mask=[0, 10])
+
+    while True:
+        sparkle.animate()
 
 
 def turn_off_lights():

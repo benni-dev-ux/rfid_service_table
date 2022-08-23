@@ -66,7 +66,6 @@ def power_button():
     check_call(['sudo', 'poweroff'])
 
 
-
 def clear_console():
     if not CONSOLE_OUTPUT:
         os.system("clear")
@@ -77,9 +76,9 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            # light_control.fill_light_ring(100, LIGHT_COLOR)
-            # light_control.fill_light_ring(0, LIGHT_COLOR)
-            light_control.pulse_anim_light_ring(LIGHT_COLOR, 1)
+            # light_control.pulse_anim_light_ring(LIGHT_COLOR)
+            # light_control.change_anim_light_ring( light_control.colors["Teal"], light_control.colors["Purple"], light_control.colors["Navy"])
+            light_control.sparkle_anim_light_ring(LIGHT_COLOR)
 
         if START_UP_SOUND:
             global media_player
