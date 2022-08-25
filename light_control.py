@@ -1,3 +1,5 @@
+import multiprocessing
+
 import board
 import neopixel
 from adafruit_led_animation.animation.colorcycle import ColorCycle
@@ -37,6 +39,19 @@ def pulse_anim_light_ring(color):
         pulse.animate()
 
 
+def amnimate(colors):
+    global t
+    if t.is_alive():
+        t.kill()
+
+    t = multiprocessing.Process(target=change_anim_light_ring.main, args=colors)
+    t.start()
+
+
+# animation_thread = threading.Thread(target=change_anim_light_ring, name="anim_thread", args=colors)
+# animation_thread.start()
+
+
 def change_anim_light_ring(colors):
     colorcycle = ColorCycle(pixels, 0.5, colors=[colors[0], colors[1], colors[2]])
 
@@ -49,9 +64,10 @@ def sparkle_anim_light_ring(color):
 
     while True:
         sparkle.animate()
-        
+
+
 def sparklePulse_anim_light_ring(color):
-    sparkle = SparklePulse(pixels, speed=0.1, color=color, period=10,min_intensity=0.0,max_intensity=1.0)
+    sparkle = SparklePulse(pixels, speed=0.1, color=color, period=10, min_intensity=0.0, max_intensity=1.0)
 
     while True:
         sparkle.animate()
