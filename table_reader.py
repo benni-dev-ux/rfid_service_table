@@ -87,7 +87,7 @@ def main():
             print("\n RFID Player Ready")
 
         # Link to media list
-        tag_list = media.media_list.list
+        tag_list = media.media_list.media_IDs
 
         # Mapping functions to button presses
         button1 = Button(power_button_pin, hold_time=2)
