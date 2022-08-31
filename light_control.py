@@ -32,42 +32,37 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
-def pulse_anim_light_ring(color):
-    pulse = Pulse(pixels, speed=0.1, color=color, period=3)
+def animate_default():
+    t = multiprocessing.Process(target=default_animation)
+    t.start()
+
+
+def animate_pause():
+    t = multiprocessing.Process(target=default_animation)
+    t.start()
+
+
+def animate_play():
+    t = multiprocessing.Process(target=default_animation)
+    t.start()
+
+
+def default_animation():
+    pulse = Pulse(pixels, speed=0.1, color=colors["Silver"], period=3)
 
     while True:
         pulse.animate()
 
 
-def amnimate(colors):
-    global t
-    if t.is_alive():
-        t.kill()
-
-    t = multiprocessing.Process(target=change_anim_light_ring.main, args=colors)
-    t.start()
-
-
-# animation_thread = threading.Thread(target=change_anim_light_ring, name="anim_thread", args=colors)
-# animation_thread.start()
-
-
-def change_anim_light_ring(colors):
-    colorcycle = ColorCycle(pixels, 0.5, colors=[colors[0], colors[1], colors[2]])
+def paused_animation():
+    pulse = Pulse(pixels, speed=0.1, color=colors["Olive"], period=3)
 
     while True:
-        colorcycle.animate()
+        pulse.animate()
 
 
-def sparkle_anim_light_ring(color):
-    sparkle = Sparkle(pixels, speed=0.1, color=color, num_sparkles=3, mask=range(31))
-
-    while True:
-        sparkle.animate()
-
-
-def sparklePulse_anim_light_ring(color):
-    sparkle = SparklePulse(pixels, speed=0.1, color=color, period=10, min_intensity=0.0, max_intensity=1.0)
+def play_animation():
+    sparkle = SparklePulse(pixels, speed=0.1, color=colors["Green"], period=10, min_intensity=0.0, max_intensity=1.0)
 
     while True:
         sparkle.animate()
