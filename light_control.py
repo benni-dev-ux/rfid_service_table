@@ -2,9 +2,7 @@ import multiprocessing
 
 import board
 import neopixel
-from adafruit_led_animation.animation.colorcycle import ColorCycle
 from adafruit_led_animation.animation.pulse import Pulse
-from adafruit_led_animation.animation.sparkle import Sparkle
 from adafruit_led_animation.animation.sparklepulse import SparklePulse
 
 gpio_pin = board.D18
