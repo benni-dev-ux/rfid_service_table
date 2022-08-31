@@ -94,7 +94,7 @@ def main():
 
         # Mapping functions to button presses
         button1 = Button(power_button_pin, hold_time=2)
-        button1.when_pressed = reboot
+        button1.when_held = reboot
         button2 = Button(power_button_pin)
         button2.when_pressed = shutdown
 
