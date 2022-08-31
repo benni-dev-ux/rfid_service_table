@@ -19,9 +19,6 @@ SLEEP_DELAY = 0.33  # Delay between RFID Scans
 
 FILEPATH = "/home/pi/rfid_service_table/media/"
 
-# light ring
-LIGHT_COLOR = light_control.colors["Teal"]
-
 # Button Pins
 power_button_pin = 19
 
@@ -57,6 +54,9 @@ def play_pause():
 
     if media_player is not None:
         media_player.pause()
+        light_control.animate_pause()
+    else:
+        light_control.animate_play()
     clear_console()
 
 
@@ -76,11 +76,7 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            pass
-            # light_control.pulse_anim_light_ring(LIGHT_COLOR)
-            # light_control.change_anim_light_ring( [light_control.colors["Teal"], light_control.colors["Purple"], light_control.colors["Navy"]])
-            # light_control.sparkle_anim_light_ring(LIGHT_COLOR)
-            # light_control.sparklepulse_anim_light_ring(LIGHT_COLOR)
+            light_control.animate_default()
 
         if START_UP_SOUND:
             global media_player
@@ -114,7 +110,7 @@ def main():
                     is_paused = True
 
             elif (
-                comp == code
+                    comp == code
             ):  # Trigger Play Command if code occurs exactly once in list of last codes
 
                 is_paused = False
