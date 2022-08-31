@@ -15,7 +15,7 @@ Connect Buttons, Lightring and RFID Reader
 
 ![image](doc/pinout_complete.png)
 
-Install current version of Raspberry OS and run updates
+Install Legacy version of Raspberry OS (Buster) and run updates
 
     sudo apt update
     sudo apt upgrade
@@ -27,7 +27,7 @@ Setup Neopixel libraries for the Lightring
 
 Install dependencies from requirements.txt
 
-    sudo pip3 install requirements.txt
+    sudo pip3 install mfrc522 adafruit-circuitpython-led-animation python-vlc
 
 Enable SPI in raspi-config
 
@@ -62,6 +62,6 @@ Edit .bashrc with nano
 At the end of the file add:
 
     echo Running at boot
-    python3 /home/pi/rfid_service_table/table_reader.py
+    sudo python3 /home/pi/rfid_service_table/table_reader.py
 
 See [link](https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/) for more detailed instruction
