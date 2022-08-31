@@ -63,7 +63,7 @@ def play_pause():
 def power_button():
     print("Shutting down the Device")
     light_control.turn_off_lights()
-    check_call(['sudo', 'poweroff'])
+    check_call(["sudo", "poweroff"])
 
 
 def clear_console():
@@ -76,10 +76,11 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            light_control.pulse_anim_light_ring(LIGHT_COLOR)
-            #light_control.change_anim_light_ring( [light_control.colors["Teal"], light_control.colors["Purple"], light_control.colors["Navy"]])
-            #light_control.sparkle_anim_light_ring(LIGHT_COLOR)
-            light_control.sparklepulse_anim_light_ring(LIGHT_COLOR)
+            pass
+            # light_control.pulse_anim_light_ring(LIGHT_COLOR)
+            # light_control.change_anim_light_ring( [light_control.colors["Teal"], light_control.colors["Purple"], light_control.colors["Navy"]])
+            # light_control.sparkle_anim_light_ring(LIGHT_COLOR)
+            # light_control.sparklepulse_anim_light_ring(LIGHT_COLOR)
 
         if START_UP_SOUND:
             global media_player
@@ -112,7 +113,9 @@ def main():
                     play_pause()
                     is_paused = True
 
-            elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
+            elif (
+                comp == code
+            ):  # Trigger Play Command if code occurs exactly once in list of last codes
 
                 is_paused = False
                 if comp == last_media_code:
