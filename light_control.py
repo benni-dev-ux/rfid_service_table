@@ -1,5 +1,4 @@
 import multiprocessing
-import time
 from os import kill
 from signal import SIGKILL
 
@@ -33,7 +32,6 @@ def fill_light_ring(percentage, color):
     for i in range(num_leds):
         if i <= filled:
             pixels[i] = color
-            time.sleep(0.12)
         else:
             pixels[i] = (0, 0, 0)
 

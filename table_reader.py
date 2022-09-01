@@ -14,8 +14,8 @@ import media.media_list
 START_UP_SOUND = True
 ANIMATIONS = True
 FORCE_ANALOG_SOUND = False
-CONSOLE_OUTPUT = True
-SLEEP_DELAY = 0.33  # Delay between RFID Scans
+CONSOLE_OUTPUT = False
+SLEEP_DELAY = 0.30  # Delay between RFID Scans
 
 DEFAULT_COLOR = light_control.colors["Silver"]
 PLAY_COLOR = light_control.colors["Green"]
@@ -28,6 +28,9 @@ power_button_pin = 19
 
 global media_player
 last_media_code = -1
+
+global first_start
+first_start = True
 
 
 def play_media(filename):
@@ -117,15 +120,19 @@ def main():
             print(last_codes_lst)
 
             if comp == 0:  # if sum of last 5 codes =0 -> Pause Media
-                if not is_paused:
+                global first_start
+                if not first_start:
+                    first_start = False
 
-                    play_pause()
-                    print("pausing")
-                    is_paused = True
-                    if ANIMATIONS:
-                        light_control.animate("pause")
-                    else:
-                        light_control.fill_light_ring(100, PAUSE_COLOR)
+                    if not is_paused:
+
+                        play_pause()
+                        print("pausing")
+                        is_paused = True
+                        if ANIMATIONS:
+                            light_control.animate("pause")
+                        else:
+                            light_control.fill_light_ring(100, PAUSE_COLOR)
 
 
             elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
