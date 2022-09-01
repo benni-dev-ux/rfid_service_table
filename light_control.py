@@ -1,4 +1,5 @@
 import multiprocessing
+import time
 from os import kill
 from signal import SIGKILL
 
@@ -10,6 +11,10 @@ from adafruit_led_animation.animation.sparklepulse import SparklePulse
 gpio_pin = board.D18
 num_leds = 32
 ORDER = neopixel.GRB
+
+def_running = False
+play_running = False
+pause_running = False
 
 global anim_pids
 anim_pids = []
@@ -28,6 +33,7 @@ def fill_light_ring(percentage, color):
     for i in range(num_leds):
         if i <= filled:
             pixels[i] = color
+            time.sleep(0.12)
         else:
             pixels[i] = (0, 0, 0)
 
@@ -46,11 +52,14 @@ def animate(state):
     pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
+
         kill_active_pids()
         def_proc.start()
         anim_pids.append(def_proc.pid)
 
     elif state is "pause":
+        if def_proc.is_alive():
+            def_proc.close()
         kill_active_pids()
         pause_proc.start()
         anim_pids.append(pause_proc.pid)
