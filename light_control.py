@@ -1,4 +1,5 @@
 import multiprocessing
+from multiprocessing import active_children
 
 import board
 import neopixel
@@ -30,29 +31,37 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
+def kill_active_children():
+    children = active_children()
+    # report a count of active children
+    print(f'Active Children Count: {len(children)}')
+    # report each in turn
+    for child in children:
+        child.terminate()
+        print(child)
+
+
 def animate(state):
     def_proc = multiprocessing.Process(name="default_animation", target=default_animation)
     play_proc = multiprocessing.Process(name="play_animation", target=play_animation)
     pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
-        if play_proc.is_alive():
-            play_proc.terminate()
-        if pause_proc.is_alive():
-            pause_proc.terminate()
+        #   if play_proc.is_alive():
+        #       play_proc.terminate()
+        #   if pause_proc.is_alive():
+        #       pause_proc.terminate()
+        kill_active_children()
+
         def_proc.start()
 
     elif state is "pause":
-        if play_proc.is_alive():
-            play_proc.terminate()
-        if def_proc.is_alive():
-            def_proc.terminate()
+        kill_active_children()
+
         pause_proc.start()
     elif state is "play":
-        if def_proc.is_alive():
-            def_proc.terminate()
-        if pause_proc.is_alive():
-            pause_proc.terminate()
+        kill_active_children()
+
         play_proc.start()
 
 
