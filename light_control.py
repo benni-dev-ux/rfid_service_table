@@ -52,14 +52,11 @@ def animate(state):
     pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
-
         kill_active_pids()
         def_proc.start()
         anim_pids.append(def_proc.pid)
 
     elif state is "pause":
-        if def_proc.is_alive():
-            def_proc.close()
         kill_active_pids()
         pause_proc.start()
         anim_pids.append(pause_proc.pid)
