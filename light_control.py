@@ -1,4 +1,4 @@
-import threading
+import multiprocessing
 
 import board
 import neopixel
@@ -31,28 +31,28 @@ def fill_light_ring(percentage, color):
 
 
 def animate(state):
-    def_thread = threading.Thread(name="default_animation", target=default_animation)
-    play_thread = threading.Thread(name="play_animation", target=play_animation)
-    pause_thread = threading.Thread(name="paused_animation", target=paused_animation)
+    def_thread = multiprocessing.Process(name="default_animation", target=default_animation)
+    play_thread = multiprocessing.Process(name="play_animation", target=play_animation)
+    pause_thread = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
         if play_thread.is_alive():
-            play_thread.join()
+            play_thread.terminate()
         if pause_thread.is_alive():
-            pause_thread.join()
+            pause_thread.terminate()
         def_thread.start()
 
     elif state is "pause":
         if play_thread.is_alive():
-            play_thread.join()
+            play_thread.terminate()
         if def_thread.is_alive():
-            def_thread.join()
+            def_thread.terminate()
         pause_thread.start()
     elif state is "play":
         if def_thread.is_alive():
-            def_thread.join()
+            def_thread.terminate()
         if pause_thread.is_alive():
-            pause_thread.join()
+            pause_thread.terminate()
         play_thread.start()
 
 
