@@ -13,6 +13,15 @@ pixels = neopixel.NeoPixel(
     gpio_pin, num_leds, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
 
+global default_running
+default_running = False
+
+global play_running
+default_running = False
+
+global paused_running
+default_running = False
+
 
 def fill_light_ring(percentage, color):
     """Fills up the tables lightring to given percentage"""
@@ -31,6 +40,7 @@ def fill_light_ring(percentage, color):
 
 
 def animate_default():
+    global t
     t = multiprocessing.Process(target=default_animation)
     t.start()
 
@@ -46,23 +56,42 @@ def animate_play():
 
 
 def default_animation():
+    global default_running
+    default_running = True
+    global paused_running
+    paused_running = False
+    global play_running
+    play_running = False
     pulse = Pulse(pixels, speed=0.1, color=colors["Silver"], period=3)
 
-    while True:
+    while default_running:
         pulse.animate()
 
 
 def paused_animation():
+    global default_running
+    default_running = False
+    global paused_running
+    paused_running = True
+    global play_running
+    play_running = False
     pulse = Pulse(pixels, speed=0.1, color=colors["Olive"], period=3)
 
-    while True:
+    while paused_running:
         pulse.animate()
 
 
 def play_animation():
+    global default_running
+    default_running = False
+    global paused_running
+    paused_running = False
+    global play_running
+    play_running = True
+
     sparkle = SparklePulse(pixels, speed=0.1, color=colors["Green"], period=10, min_intensity=0.0, max_intensity=1.0)
 
-    while True:
+    while play_running:
         sparkle.animate()
 
 
