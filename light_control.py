@@ -31,15 +31,6 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
-def kill_active_children():
-    children = active_children()
-    # report a count of active children
-    print(f'Active Children Count: {len(children)}')
-    # report each in turn
-    for child in children:
-        child.terminate()
-        print(child)
-
 
 def animate(state):
     def_proc = multiprocessing.Process(name="default_animation", target=default_animation)
@@ -47,21 +38,23 @@ def animate(state):
     pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
-        #   if play_proc.is_alive():
-        #       play_proc.terminate()
-        #   if pause_proc.is_alive():
-        #       pause_proc.terminate()
-        kill_active_children()
-
+        if play_proc.is_alive():
+            play_proc.terminate()
+        if pause_proc.is_alive():
+            pause_proc.terminate()
         def_proc.start()
 
     elif state is "pause":
-        kill_active_children()
-
+        if play_proc.is_alive():
+            play_proc.terminate()
+        if def_proc.is_alive():
+            def_proc.terminate()
         pause_proc.start()
     elif state is "play":
-        kill_active_children()
-
+        if def_proc.is_alive():
+            def_proc.terminate()
+        if pause_proc.is_alive():
+            pause_proc.terminate()
         play_proc.start()
 
 
