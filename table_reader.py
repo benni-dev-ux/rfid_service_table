@@ -12,10 +12,14 @@ import media.media_list
 
 # Settings
 START_UP_SOUND = True
-START_UP_ANIMATION = True
+ANIMATIONS = False
 FORCE_ANALOG_SOUND = False
 CONSOLE_OUTPUT = True
 SLEEP_DELAY = 0.33  # Delay between RFID Scans
+
+DEFAULT_COLOR = light_control.colors["Silver"]
+PLAY_COLOR = light_control.colors["Green"]
+PAUSE_COLOR = light_control.colors["Olive"]
 
 FILEPATH = "/home/pi/rfid_service_table/media/"
 
@@ -54,9 +58,7 @@ def play_pause():
 
     if media_player is not None:
         media_player.pause()
-        #light_control.animate("pause")
-    else:
-        #light_control.animate("play")
+
     clear_console()
 
 
@@ -81,8 +83,10 @@ def main():
     try:
 
         # Simple start up Animation
-        if START_UP_ANIMATION:
+        if ANIMATIONS:
             light_control.animate("default")
+        else:
+            light_control.fill_light_ring(100, DEFAULT_COLOR)
 
         if START_UP_SOUND:
             global media_player
@@ -115,10 +119,13 @@ def main():
                 if not is_paused:
                     play_pause()
                     is_paused = True
+                    light_control.fill_light_ring(100, PAUSE_COLOR)
+
 
             elif (
                     comp == code
             ):  # Trigger Play Command if code occurs exactly once in list of last codes
+                light_control.fill_light_ring(100, PLAY_COLOR)
 
                 is_paused = False
                 if comp == last_media_code:
