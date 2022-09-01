@@ -31,29 +31,29 @@ def fill_light_ring(percentage, color):
 
 
 def animate(state):
-    def_thread = multiprocessing.Process(name="default_animation", target=default_animation)
-    play_thread = multiprocessing.Process(name="play_animation", target=play_animation)
-    pause_thread = multiprocessing.Process(name="paused_animation", target=paused_animation)
+    def_proc = multiprocessing.Process(name="default_animation", target=default_animation)
+    play_proc = multiprocessing.Process(name="play_animation", target=play_animation)
+    pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
-        if play_thread.is_alive():
-            play_thread.terminate()
-        if pause_thread.is_alive():
-            pause_thread.terminate()
-        def_thread.start()
+        if play_proc.is_alive():
+            play_proc.terminate()
+        if pause_proc.is_alive():
+            pause_proc.terminate()
+        def_proc.start()
 
     elif state is "pause":
-        if play_thread.is_alive():
-            play_thread.terminate()
-        if def_thread.is_alive():
-            def_thread.terminate()
-        pause_thread.start()
+        if play_proc.is_alive():
+            play_proc.terminate()
+        if def_proc.is_alive():
+            def_proc.terminate()
+        pause_proc.start()
     elif state is "play":
-        if def_thread.is_alive():
-            def_thread.terminate()
-        if pause_thread.is_alive():
-            pause_thread.terminate()
-        play_thread.start()
+        if def_proc.is_alive():
+            def_proc.terminate()
+        if pause_proc.is_alive():
+            pause_proc.terminate()
+        play_proc.start()
 
 
 def default_animation():
