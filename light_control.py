@@ -1,4 +1,4 @@
-import multiprocessing
+import threading
 
 import board
 import neopixel
@@ -30,37 +30,30 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
-def animate_default():
-    if t_pau.is_alive():
-        t_pau.terminate()
-    if t_pla.is_alive():
-        t_pla.terminate()
+def animate(state):
+    def_thread = threading.Thread(name="default_animation", target=default_animation)
+    play_thread = threading.Thread(name="play_animation", target=play_animation)
+    pause_thread = threading.Thread(name="paused_animation", target=paused_animation)
 
-    global t_def
-    t_def = multiprocessing.Process(target=default_animation)
-    t_def.start()
+    if state is "default":
+        if play_thread.is_alive():
+            play_thread.join()
+        if pause_thread.is_alive():
+            pause_thread.join()
+        def_thread.start()
 
-
-def animate_pause():
-    if t_def.is_alive():
-        t_def.terminate()
-    if t_pla.is_alive():
-        t_pla.terminate()
-
-    global t_pau
-    t_pau = multiprocessing.Process(target=default_animation)
-    t_pau.start()
-
-
-def animate_play():
-    if t_pau.is_alive():
-        t_pau.terminate()
-    if t_def.is_alive():
-        t_def.terminate()
-
-    global t_pla
-    t_pla = multiprocessing.Process(target=default_animation)
-    t_pla.start()
+    elif state is "pause":
+        if play_thread.is_alive():
+            play_thread.join()
+        if def_thread.is_alive():
+            def_thread.join()
+        pause_thread.start()
+    elif state is "play":
+        if def_thread.is_alive():
+            def_thread.join()
+        if pause_thread.is_alive():
+            pause_thread.join()
+        play_thread.start()
 
 
 def default_animation():

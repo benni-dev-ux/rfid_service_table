@@ -14,7 +14,7 @@ import media.media_list
 START_UP_SOUND = True
 START_UP_ANIMATION = True
 FORCE_ANALOG_SOUND = False
-CONSOLE_OUTPUT = False
+CONSOLE_OUTPUT = True
 SLEEP_DELAY = 0.33  # Delay between RFID Scans
 
 FILEPATH = "/home/pi/rfid_service_table/media/"
@@ -54,9 +54,9 @@ def play_pause():
 
     if media_player is not None:
         media_player.pause()
-        light_control.animate_pause()
+        #light_control.animate("pause")
     else:
-        light_control.animate_play()
+        #light_control.animate("play")
     clear_console()
 
 
@@ -82,7 +82,7 @@ def main():
 
         # Simple start up Animation
         if START_UP_ANIMATION:
-            light_control.animate_default()
+            light_control.animate("default")
 
         if START_UP_SOUND:
             global media_player
