@@ -13,15 +13,6 @@ pixels = neopixel.NeoPixel(
     gpio_pin, num_leds, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
 
-global default_running
-default_running = False
-
-global play_running
-default_running = False
-
-global paused_running
-default_running = False
-
 
 def fill_light_ring(percentage, color):
     """Fills up the tables lightring to given percentage"""
@@ -40,58 +31,56 @@ def fill_light_ring(percentage, color):
 
 
 def animate_default():
-    global t
-    t = multiprocessing.Process(target=default_animation)
-    t.start()
+    if t_pau.is_alive():
+        t_pau.terminate()
+    if t_pla.is_alive():
+        t_pla.terminate()
+
+    global t_def
+    t_def = multiprocessing.Process(target=default_animation)
+    t_def.start()
 
 
 def animate_pause():
-    t = multiprocessing.Process(target=default_animation)
-    t.start()
+    if t_def.is_alive():
+        t_def.terminate()
+    if t_pla.is_alive():
+        t_pla.terminate()
+
+    global t_pau
+    t_pau = multiprocessing.Process(target=default_animation)
+    t_pau.start()
 
 
 def animate_play():
-    t = multiprocessing.Process(target=default_animation)
-    t.start()
+    if t_pau.is_alive():
+        t_pau.terminate()
+    if t_def.is_alive():
+        t_def.terminate()
+
+    global t_pla
+    t_pla = multiprocessing.Process(target=default_animation)
+    t_pla.start()
 
 
 def default_animation():
-    global default_running
-    default_running = True
-    global paused_running
-    paused_running = False
-    global play_running
-    play_running = False
     pulse = Pulse(pixels, speed=0.1, color=colors["Silver"], period=3)
 
-    while default_running:
+    while True:
         pulse.animate()
 
 
 def paused_animation():
-    global default_running
-    default_running = False
-    global paused_running
-    paused_running = True
-    global play_running
-    play_running = False
     pulse = Pulse(pixels, speed=0.1, color=colors["Olive"], period=3)
 
-    while paused_running:
+    while True:
         pulse.animate()
 
 
 def play_animation():
-    global default_running
-    default_running = False
-    global paused_running
-    paused_running = False
-    global play_running
-    play_running = True
-
     sparkle = SparklePulse(pixels, speed=0.1, color=colors["Green"], period=10, min_intensity=0.0, max_intensity=1.0)
 
-    while play_running:
+    while True:
         sparkle.animate()
 
 
