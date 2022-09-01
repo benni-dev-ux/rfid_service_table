@@ -29,8 +29,6 @@ power_button_pin = 19
 global media_player
 last_media_code = -1
 
-global first_start
-first_start = True
 
 
 def play_media(filename):
@@ -120,19 +118,16 @@ def main():
             print(last_codes_lst)
 
             if comp == 0:  # if sum of last 5 codes =0 -> Pause Media
-                global first_start
-                if not first_start:
-                    first_start = False
 
-                    if not is_paused:
+                if not is_paused:
 
-                        play_pause()
-                        print("pausing")
-                        is_paused = True
-                        if ANIMATIONS:
-                            light_control.animate("pause")
-                        else:
-                            light_control.fill_light_ring(100, PAUSE_COLOR)
+                    play_pause()
+                    print("pausing")
+                    is_paused = True
+                    if ANIMATIONS:
+                        light_control.animate("pause")
+                    else:
+                        light_control.fill_light_ring(100, PAUSE_COLOR)
 
 
             elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
