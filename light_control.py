@@ -1,5 +1,6 @@
 import multiprocessing
-from multiprocessing import active_children
+from os import kill
+from signal import SIGKILL
 
 import board
 import neopixel
@@ -10,6 +11,8 @@ gpio_pin = board.D18
 num_leds = 32
 ORDER = neopixel.GRB
 
+global anim_pids
+anim_pids = []
 pixels = neopixel.NeoPixel(
     gpio_pin, num_leds, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
@@ -31,6 +34,11 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
+def kill_active_pids():
+    for pid in anim_pids:
+        kill(pid, SIGKILL)
+        anim_pids.remove(pid)
+
 
 def animate(state):
     def_proc = multiprocessing.Process(name="default_animation", target=default_animation)
@@ -38,24 +46,18 @@ def animate(state):
     pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
 
     if state is "default":
-        if play_proc.is_alive():
-            play_proc.terminate()
-        if pause_proc.is_alive():
-            pause_proc.terminate()
+        kill_active_pids()
         def_proc.start()
+        anim_pids.append(def_proc.pid)
 
     elif state is "pause":
-        if play_proc.is_alive():
-            play_proc.terminate()
-        if def_proc.is_alive():
-            def_proc.terminate()
+        kill_active_pids()
         pause_proc.start()
+        anim_pids.append(pause_proc.pid)
     elif state is "play":
-        if def_proc.is_alive():
-            def_proc.terminate()
-        if pause_proc.is_alive():
-            pause_proc.terminate()
+        kill_active_pids()
         play_proc.start()
+        anim_pids.append(play_proc.pid)
 
 
 def default_animation():
