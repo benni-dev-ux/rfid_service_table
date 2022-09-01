@@ -63,7 +63,7 @@ def play_pause():
 def reboot():
     print("Rebooting the Device")
     light_control.turn_off_lights()
-    check_call(["sudo", "reboot now"])
+    check_call(["sudo", "reboot"])
 
 
 def shutdown():
@@ -93,10 +93,9 @@ def main():
         tag_list = media.media_list.media_IDs
 
         # Mapping functions to button presses
-        button1 = Button(power_button_pin, hold_time=2)
-        button1.when_held = reboot
-        button2 = Button(power_button_pin)
-        button2.when_pressed = shutdown
+        power_button = Button(power_button_pin, hold_time=3)
+        power_button.when_held = reboot
+        power_button.when_released = shutdown
 
         reader = SimpleMFRC522()
 
