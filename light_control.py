@@ -24,6 +24,9 @@ pixels = neopixel.NeoPixel(
 
 def fill_light_ring(percentage, color):
     """Fills up the tables lightring to given percentage"""
+
+    kill_active_pids()
+
     if percentage > 100 or percentage < 0:
         percentage = 100
 
@@ -44,42 +47,23 @@ def kill_active_pids():
         anim_pids.remove(pid)
 
 
-def animate(state):
-    def_proc = multiprocessing.Process(name="default_animation", target=default_animation)
-    play_proc = multiprocessing.Process(name="play_animation", target=play_animation)
-    pause_proc = multiprocessing.Process(name="paused_animation", target=paused_animation)
+def animate(color):
+    play_proc = multiprocessing.Process(name="play_animation", args=(color,), target=pulse_animation)
 
-    if state is "default":
-        kill_active_pids()
-        def_proc.start()
-        anim_pids.append(def_proc.pid)
-
-    elif state is "pause":
-        kill_active_pids()
-        pause_proc.start()
-        anim_pids.append(pause_proc.pid)
-    elif state is "play":
-        kill_active_pids()
-        play_proc.start()
-        anim_pids.append(play_proc.pid)
+    kill_active_pids()
+    play_proc.start()
+    anim_pids.append(play_proc.pid)
 
 
-def default_animation():
-    pulse = Pulse(pixels, speed=0.1, color=colors["Silver"], period=3)
+def pulse_animation(color):
+    pulse = Pulse(pixels, speed=0.1, color=color, period=3)
 
     while True:
         pulse.animate()
 
 
-def paused_animation():
-    pulse = Pulse(pixels, speed=0.1, color=colors["Olive"], period=3)
-
-    while True:
-        pulse.animate()
-
-
-def play_animation():
-    sparkle = SparklePulse(pixels, speed=0.1, color=colors["Green"], period=10, min_intensity=0.0, max_intensity=1.0)
+def sparkle_animation(color):
+    sparkle = SparklePulse(pixels, speed=0.1, color=color, period=10, min_intensity=0.0, max_intensity=1.0)
 
     while True:
         sparkle.animate()
