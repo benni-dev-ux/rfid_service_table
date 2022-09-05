@@ -1,4 +1,6 @@
 import multiprocessing
+from os import kill
+from signal import SIGKILL
 
 import board
 import neopixel
@@ -9,6 +11,12 @@ gpio_pin = board.D18
 num_leds = 32
 ORDER = neopixel.GRB
 
+def_running = False
+play_running = False
+pause_running = False
+
+global anim_pids
+anim_pids = []
 pixels = neopixel.NeoPixel(
     gpio_pin, num_leds, brightness=0.2, auto_write=False, pixel_order=ORDER
 )
@@ -16,6 +24,9 @@ pixels = neopixel.NeoPixel(
 
 def fill_light_ring(percentage, color):
     """Fills up the tables lightring to given percentage"""
+
+    kill_active_pids()
+
     if percentage > 100 or percentage < 0:
         percentage = 100
 
@@ -30,55 +41,29 @@ def fill_light_ring(percentage, color):
         pixels.show()
 
 
-def animate_default():
-    if t_pau.is_alive():
-        t_pau.terminate()
-    if t_pla.is_alive():
-        t_pla.terminate()
-
-    global t_def
-    t_def = multiprocessing.Process(target=default_animation)
-    t_def.start()
+def kill_active_pids():
+    for pid in anim_pids:
+        kill(pid, SIGKILL)
+        anim_pids.remove(pid)
 
 
-def animate_pause():
-    if t_def.is_alive():
-        t_def.terminate()
-    if t_pla.is_alive():
-        t_pla.terminate()
+def animate(color):
+    play_proc = multiprocessing.Process(name="play_animation", args=(color,), target=pulse_animation)
 
-    global t_pau
-    t_pau = multiprocessing.Process(target=default_animation)
-    t_pau.start()
+    kill_active_pids()
+    play_proc.start()
+    anim_pids.append(play_proc.pid)
 
 
-def animate_play():
-    if t_pau.is_alive():
-        t_pau.terminate()
-    if t_def.is_alive():
-        t_def.terminate()
-
-    global t_pla
-    t_pla = multiprocessing.Process(target=default_animation)
-    t_pla.start()
-
-
-def default_animation():
-    pulse = Pulse(pixels, speed=0.1, color=colors["Silver"], period=3)
+def pulse_animation(color):
+    pulse = Pulse(pixels, speed=0.1, color=color, period=3)
 
     while True:
         pulse.animate()
 
 
-def paused_animation():
-    pulse = Pulse(pixels, speed=0.1, color=colors["Olive"], period=3)
-
-    while True:
-        pulse.animate()
-
-
-def play_animation():
-    sparkle = SparklePulse(pixels, speed=0.1, color=colors["Green"], period=10, min_intensity=0.0, max_intensity=1.0)
+def sparkle_animation(color):
+    sparkle = SparklePulse(pixels, speed=0.1, color=color, period=10, min_intensity=0.0, max_intensity=1.0)
 
     while True:
         sparkle.animate()
