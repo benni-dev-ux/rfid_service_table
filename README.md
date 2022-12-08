@@ -57,7 +57,7 @@ To run the script when the py is started, add it to .bashrc
 
 Edit .bashrc with nano
 
-    sudo nano /home/pi/.bashrc
+    sudo nano ~/.bashrc
 
 At the end of the file add:
 
@@ -65,3 +65,15 @@ At the end of the file add:
     sudo python3 /home/pi/rfid_service_table/table_reader.py
 
 See [link](https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/) for more detailed instruction
+
+## Setting the boot mode to Console Autologin
+
+Once the script is set up on startup, switch the PIs bootmode to console autologin
+
+    sudo raspi-config
+    system options/boot options/console autologin
+    reboot
+
+## Additional Notes
+
+- If you are running a raspberry pi4 with two micro HDMI outputs, use HDMI0, otherwise sound wont work
