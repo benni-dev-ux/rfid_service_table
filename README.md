@@ -2,8 +2,12 @@
 
 Version #2 of the RFID Service Table Controlled by a Raspberry PI
 
-
 [Demo](https://www.youtube.com/embed/LW-wXfXkIgU?autohide=1&autoplay=0)
+
+Simplified Version
+
+- No Lightring
+- No Autopause when obejct is removed
 
 ## Hardware
 

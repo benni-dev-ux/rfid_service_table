@@ -1,24 +1,18 @@
 import os
 import sys
-import time
 from subprocess import check_call
 
 import vlc
 from gpiozero import Button
 from mfrc522 import SimpleMFRC522
 
-import light_control
 import media.media_list
 
 # Settings
 START_UP_SOUND = True
-ANIMATIONS = True
 FORCE_ANALOG_SOUND = False
 CONSOLE_OUTPUT = False
 SLEEP_DELAY = 0.30  # Delay between RFID Scans
-
-PLAY_COLOR = light_control.colors["Green"]
-PAUSE_COLOR = light_control.colors["Olive"]
 
 FILEPATH = "/home/pi/rfid_service_table/media/"
 
@@ -37,17 +31,7 @@ def play_media(filename):
     media_player = vlc.MediaPlayer(filename)
     media_player.set_fullscreen(True)
 
-    # start playing video
     media_player.play()
-
-
-def stop_media():
-    print("Stopping all media")
-    global media_player
-    media_player.stop()
-    global last_media_code
-    last_media_code = -1
-    clear_console()
 
 
 def play_pause():
@@ -61,13 +45,11 @@ def play_pause():
 
 def reboot():
     print("Rebooting the Device")
-    light_control.turn_off_lights()
     check_call(["sudo", "reboot"])
 
 
 def shutdown():
     print("Shutting down the Device")
-    light_control.turn_off_lights()
     check_call(["sudo", "poweroff"])
 
 
@@ -79,8 +61,6 @@ def clear_console():
 def main():
     try:
 
-        light_control.fill_light_ring(100, PAUSE_COLOR)
-
         if START_UP_SOUND:
             global media_player
             play_media("startup.wav")
@@ -90,68 +70,31 @@ def main():
         tag_list = media.media_list.media_IDs
 
         # Mapping functions to button presses
-        power_button = Button(power_button_pin, hold_time=3)
+        power_button = Button(power_button_pin, hold_time=2)
         power_button.when_held = reboot
         power_button.when_released = shutdown
 
         reader = SimpleMFRC522()
 
-        last_codes_lst = [-1, -1, -1]
-        global last_media_code
-        last_media_code = -1
-        is_paused = False
-
         # Main Loop of the App: Constantly checking for new  RFID input
         while True:
             code = read_tag(reader)
-            last_codes_lst.insert(0, code)
-            last_codes_lst.pop()
+            for m in tag_list:
+                if m[1] == code:
+                    global media_player
+                    if media_player is not None:
+                        media_player.stop()
 
-            comp = sum(last_codes_lst)
+                    play_media("beep.mp3")
+                    print("Playing " + m[0] + " at " + m[2])
+                    play_media(m[2])
 
-            print(last_codes_lst)
+                    print("starting" + str(code))
+                    clear_console()
 
-            if comp == 0:  # if sum of last 5 codes =0 -> Pause Media
-
-                if not is_paused:
-                    play_pause()
-                    print("pausing")
-                    is_paused = True
-
-                    light_control.fill_light_ring(100, PAUSE_COLOR)
-
-
-            elif comp == code:  # Trigger Play Command if code occurs exactly once in list of last codes
-                if ANIMATIONS:
-                    light_control.animate(PLAY_COLOR)
-                else:
-                    light_control.fill_light_ring(100, PLAY_COLOR)
-
-                is_paused = False
-                if comp == last_media_code:
-                    play_pause()
-                    print("resuming")
-                else:
-                    last_media_code = code
-                    # Check if found code occurs in media list
-                    for m in tag_list:
-                        if m[1] == code:
-                            global media_player
-                            if media_player is not None:
-                                media_player.stop()
-
-                            play_media("beep.mp3")
-                            print("Playing " + m[0] + " at " + m[2])
-                            play_media(m[2])
-
-                            print("starting" + str(code))
-                            clear_console()
-
-            time.sleep(SLEEP_DELAY)  # resume after delay
+                # time.sleep(SLEEP_DELAY)  # resume after delay
     except KeyboardInterrupt:
-        light_control.turn_off_lights()
-
-        sys.exit()
+           sys.exit()
 
 
 def read_tag(reader):
